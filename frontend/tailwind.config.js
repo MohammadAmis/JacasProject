@@ -4,13 +4,7 @@ export default {
 
   theme: {
     extend: {
-      screens: {
-        default: "0px",
-        mobile: "480px",   // Small mobile devices
-        tablet: "768px",   // Tablets
-        laptop: "1024px",  // Laptops
-        desktop: "1280px", // Desktops
-      },
+      
     },
   },
   plugins: [require("daisyui")],

@@ -1,11 +1,13 @@
-import { useState } from "react";
-import { NavLink ,Link} from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { NavLink, Link } from "react-router-dom";
 import { FaCartPlus } from "react-icons/fa";
 import { FiMenu, FiX, FiUser, FiBell, FiLogOut } from "react-icons/fi";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const mobileMenuRef = useRef(null);
+  const profileMenuRef = useRef(null);
 
   const menuItems = [
     { id: 1, name: "Home", path: "/" },
@@ -17,50 +19,82 @@ const Navbar = () => {
   ];
 
   const profileMenuItems = [
-    { id: 1, name: "Profile", path: "/profile", icon: <FiUser className="w-5 h-5"/>},
+    { id: 1, name: "Profile", path: "/profile", icon: <FiUser className="w-5 h-5" /> },
     { id: 2, name: "Notifications", path: "/notifications", icon: <FiBell className="w-5 h-5" /> },
     { id: 3, name: "Login", path: "/login", icon: <FiLogOut className="w-5 h-5" /> },
   ];
 
+  // Close menus when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+      if (profileMenuRef.current && !profileMenuRef.current.contains(event.target)) {
+        setShowProfileMenu(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
-    <nav className="bg-gradient-to-r from-blue-500 to-purple-600 shadow-lg h-16">
-      <div className="max-w-full mx-auto px-4 tablet:px-6 laptop:px-8">
+    <nav className="bg-gradient-to-r from-blue-500 to-purple-600 shadow-lg h-16 sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <div className="flex-shrink-0">
-            <Link to="/" className="text-3xl text-white">
-              Global Venture
+          {/* Logo and Mobile Menu Button */}
+          <div className="flex items-center justify-between w-full md:w-auto">
+            <Link to="/" className="text-2xl mobile:text-3xl text-white font-semibold">
+              JACAS
             </Link>
+
+            {/* Mobile menu button */}
+            <div className="md:hidden flex items-center">
+              <Link to="/cart" className="mr-4">
+                <FaCartPlus className="text-2xl text-white hover:text-blue-200 transition-colors" />
+              </Link>
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="p-2 rounded-md text-white hover:bg-blue-400 focus:outline-none focus:ring-2 focus:ring-white"
+                aria-label="Toggle menu"
+              >
+                {isOpen ? <FiX className="h-6 w-6" /> : <FiMenu className="h-6 w-6" />}
+              </button>
+            </div>
           </div>
 
           {/* Desktop Menu */}
-          <div className="default:hidden tablet:block">
+          <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-4">
               {menuItems.map((item) => (
                 <NavLink
-                key={item.id}
-                to={item.path}
-                className={({ isActive }) =>
-                  isActive
-                    ? "text-white bg-blue-400 bg-opacity-75 px-3 py-2 rounded-md text-medium font-medium"
-                    : "text-white hover:bg-blue-400 hover:bg-opacity-75 px-3 py-2 rounded-md text-medium font-medium"
-                }
-              >
-                {item.name}
-              </NavLink>
+                  key={item.id}
+                  to={item.path}
+                  className={({ isActive }) =>
+                    `px-3 py-2 rounded-md text-medium font-medium transition-colors ${
+                      isActive 
+                        ? "text-white bg-blue-400 bg-opacity-75" 
+                        : "text-white hover:bg-blue-400 hover:bg-opacity-75"
+                    }`
+                  }
+                >
+                  {item.name}
+                </NavLink>
               ))}
             </div>
           </div>
 
-          {/* Profile Menu */}
-          <div className="ml-4 flex items-center tablet:ml-6">
-            <Link to="/cart">
-              <FaCartPlus className="text-3xl mr-4 text-white hover:text-blue-400 hover:bg-opacity-75" />
+          {/* Desktop Right Section */}
+          <div className="hidden md:flex items-center ml-4">
+            <Link to="/cart" className="mr-6">
+              <FaCartPlus className="text-2xl text-white hover:text-blue-200 transition-colors" />
             </Link>
-            <div className="relative">
+            <div className="relative" ref={profileMenuRef}>
               <button
-                className="flex items-center max-w-xs bg-blue-400 bg-opacity-25 rounded-full p-2"
+                className="flex items-center bg-blue-400 bg-opacity-25 rounded-full p-2 hover:bg-opacity-50 transition-colors focus:outline-none focus:ring-2 focus:ring-white"
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
+                aria-label="Profile menu"
               >
                 <FiUser className="h-6 w-6 text-white" />
               </button>
@@ -71,8 +105,8 @@ const Navbar = () => {
                     <Link
                       key={item.id}
                       to={item.path}
-                      className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      onClick={() => setShowProfileMenu(false)} // Close menu on click
+                      className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                      onClick={() => setShowProfileMenu(false)}
                     >
                       {item.icon}
                       <span className="ml-3">{item.name}</span>
@@ -82,40 +116,48 @@ const Navbar = () => {
               )}
             </div>
           </div>
-
-          {/* Mobile menu button */}
-          <div className="-mr-2 flex tablet:hidden">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="p-2 rounded-md text-white hover:bg-blue-400"
-            >
-              {isOpen ? <FiX className="h-6 w-6" /> : <FiMenu className="h-6 w-6" />}
-            </button>
-          </div>
         </div>
-      </div>
 
-      {/* Mobile Menu */}
-      {isOpen && (
-        <div className="fixed inset-0 inset-y-[4rem] bg-gray-800 bg-opacity-90 z-50 transition-all duration-300">
-          <div className="px-2 py-3 space-y-1 mobile:px-3">
+        {/* Mobile Menu */}
+        <div
+          ref={mobileMenuRef}
+          className={`md:hidden absolute w-full left-0 bg-gray-800 transition-all duration-300 ease-in-out overflow-hidden ${
+            isOpen ? "max-h-96 py-2 border-t border-gray-700" : "max-h-0"
+          }`}
+        >
+          <div className="px-2 pt-2 pb-3 space-y-1">
             {menuItems.map((item) => (
               <NavLink
                 key={item.id}
                 to={item.path}
-                onClick={() => setIsOpen(false)} 
+                onClick={() => setIsOpen(false)}
                 className={({ isActive }) =>
-                  isActive
-                    ? "text-white bg-blue-400 bg-opacity-75 block px-3 py-2 rounded-md text-base font-medium"
-                    : "text-white hover:bg-blue-400 hover:bg-opacity-75 block px-3 py-2 rounded-md text-base font-medium"
+                  `block px-3 py-2 rounded-md text-base font-medium transition-colors ${
+                    isActive
+                      ? "text-white bg-blue-400 bg-opacity-75"
+                      : "text-white hover:bg-blue-400 hover:bg-opacity-75"
+                  }`
                 }
               >
                 {item.name}
               </NavLink>
             ))}
+            <div className="pt-4 border-t border-gray-700">
+              {profileMenuItems.map((item) => (
+                <Link
+                  key={item.id}
+                  to={item.path}
+                  className="flex items-center px-3 py-2 text-white hover:bg-blue-400 hover:bg-opacity-75 rounded-md transition-colors"
+                  onClick={() => setIsOpen(false)}
+                >
+                  {item.icon}
+                  <span className="ml-3">{item.name}</span>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
-      )}
+      </div>
     </nav>
   );
 };

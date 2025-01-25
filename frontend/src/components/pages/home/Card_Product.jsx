@@ -35,14 +35,11 @@ const Card_Product = ({ product }) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="relative h-96 transition-all duration-300">
+      <div className="relative h-96 transition-all duration-300" role="img" aria-label={product.name}>
         <img
           src={product.image}
-          alt="Product"
+          alt={product.name} 
           className={`w-full h-full object-cover ${isHovered ? 'brightness-50' : ''}`}
-          onError={(e) => {
-            e.target.src = "https://images.unsplash.com/photo-1505740420928-5e560c06d30e";
-          }}
         />
         <div className="absolute top-0 left-0 right-0 p-4 flex justify-between items-start">
           <span className="bg-red-500 text-white px-3 py-1 rounded-full font-bold text-sm">
@@ -67,9 +64,9 @@ const Card_Product = ({ product }) => {
             {product.name}
           </h3>
           <div className="flex items-center justify-between mb-2">
-            <span className="line-through text-xl text-gray-200 ">
+            {/* <span className="line-through text-xl text-gray-200 ">
             ₹{product.price}
-            </span>
+            </span> */}
             <span className="text-2xl font-bold text-white">
             ₹{product.discount_price}
             </span>
