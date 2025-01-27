@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { FaCartPlus } from "react-icons/fa";
 import { FiMenu, FiX, FiUser, FiBell, FiLogOut } from "react-icons/fi";
-import logo from "../../assets/Logo.png";
+// import logo from "../../assets/Logo.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
