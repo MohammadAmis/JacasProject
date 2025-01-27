@@ -6,7 +6,7 @@ export const fetchData = async (limit = null) => {
             ? `/api/users/fetch-products?limit=${limit}` 
             : `/api/users/fetch-products`;
 
-        const response = await axios.get(url);
+        const response = await axios.get('https://global-venture.onrender.com/api/users/fetch-products?limit=4');
         return response.data; // Return fetched data
     } catch (error) {
         console.error("Error fetching data:", error);
