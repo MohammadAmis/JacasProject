@@ -46,7 +46,8 @@ const Navbar = () => {
           {/* Logo and Mobile Menu Button */}
           <div className="flex items-center justify-between w-full md:w-auto">
             <Link to="/" className="text-2xl mobile:text-3xl text-white font-semibold">
-              <img src={logo} alt="" className="h-12 w-full object-cover" />
+{/*               <img src={logo} alt="" className="h-12 w-full object-cover" /> */}
+              Jacas
             </Link>
 
             {/* Mobile menu button */}
