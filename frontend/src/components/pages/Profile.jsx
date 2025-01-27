@@ -1,21 +1,26 @@
-import { useState } from "react";
-import { FiSearch, FiBell, FiKey, FiMoon, FiSun, FiChevronRight } from "react-icons/fi";
+import { useState } from 'react';
+import { FaUser, FaBox, FaEdit, FaCog } from 'react-icons/fa';
+import { FiSearch } from 'react-icons/fi';
 import { MdOutlineLocalShipping, MdOutlinePending, MdOutlineDeliveryDining } from "react-icons/md";
+
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState("profile");
-  const [theme, setTheme] = useState("light");
   const [searchOrder, setSearchOrder] = useState("");
-  const [notificationEnabled, setNotificationEnabled] = useState(true);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [editMode, setEditMode] = useState(false);  
+  const [security, setSecurity] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: ''
+  });
+  const [userData, setUserData] = useState({
+    name: 'Mohammad Amis',
+    email: 'amis@gmail.com',
+    phone: '+1 234 567 890',
+    address: '123 Main St, New York, USA'
+  });
 
-  const dummyUser = {
-    name: "John Doe",
-    email: "john.doe@example.com",
-    phone: "+1 234 567 8900",
-    avatar: "images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3"
-  };
-
+  // Mock order history
   const dummyOrders = [
     {
       id: "ORD001",
@@ -47,231 +52,274 @@ const Profile = () => {
     }
   ];
 
-  const handleUpdateProfile = (e) => {
-    e.preventDefault();
-    setErrorMessage("Profile updated successfully!");
-    setTimeout(() => setErrorMessage(""), 3000);
-  };
-
   const getStatusIcon = (status) => {
-    switch (status) {
-      case "Delivered":
-        return <MdOutlineDeliveryDining className="text-green-500" />;
-      case "Shipped":
-        return <MdOutlineLocalShipping className="text-blue-500" />;
-      case "Processing":
-        return <MdOutlinePending className="text-yellow-500" />;
-      default:
-        return null;
-    }
+      switch (status) {
+        case "Delivered":
+          return <MdOutlineDeliveryDining className="text-green-500" />;
+        case "Shipped":
+          return <MdOutlineLocalShipping className="text-blue-500" />;
+        case "Processing":
+          return <MdOutlinePending className="text-yellow-500" />;
+        default:
+          return null;
+      }
+    };
+  
+    const filteredOrders = dummyOrders.filter(order =>
+      order.id.toLowerCase().includes(searchOrder.toLowerCase()) ||
+      order.items.some(item => item.toLowerCase().includes(searchOrder.toLowerCase()))
+    );
+
+  
+
+  const handleInputChange = (e) => {
+    setUserData({
+      ...userData,
+      [e.target.name]: e.target.value
+    });
   };
 
-  const filteredOrders = dummyOrders.filter(order =>
-    order.id.toLowerCase().includes(searchOrder.toLowerCase()) ||
-    order.items.some(item => item.toLowerCase().includes(searchOrder.toLowerCase()))
-  );
+  const handleSecurityChange = (e) => {
+    setSecurity({
+      ...security,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleProfileUpdate = (e) => {
+    e.preventDefault();
+    setEditMode(false);
+    // Add API call here
+  };
+
+  const handlePasswordChange = (e) => {
+    e.preventDefault();
+    // Add password change logic
+  };
 
   return (
-    <div className="min-h-[calc(100vh-6rem)] flex items-center justify-center mx-auto my-auto p-4 md:p-8 ">
-      <div className="max-w-6xl mx-auto bg-white rounded-xl shadow-md overflow-hidden">
-        <div className="flex flex-col md:flex-row">
-          {/* Sidebar Navigation */}
-          <div className="w-full md:w-64 bg-gradient-to-r from-blue-300 to-purple-500 text-black p-6">
-            <div className="flex items-center justify-center mb-8">
-              <img
-                src={`https://${dummyUser.avatar}`}
-                alt="Profile"
-                className="w-20 h-20 rounded-full object-cover border-4 border-gray-700"
-              />
+    <div className="h-[calc(100vh-5rem)] bg-gray-800 p-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto lg:sticky  lg:top-24">
+        <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+          {/* Profile Header */}
+          <div className="bg-indigo-600 text-white p-6">
+            <div className="flex items-center space-x-4">
+              <div className="w-20 h-20 rounded-full bg-indigo-400 flex items-center justify-center">
+                <span className="text-2xl">JD</span>
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold">{userData.name}</h1>
+                <p className="text-indigo-200">{userData.email}</p>
+              </div>
             </div>
-            <nav>
-              <button
-                onClick={() => setActiveTab("profile")}
-                className={`w-full text-left px-4 py-3 rounded-lg mb-2 ${activeTab === "profile" ? "bg-gray-700" : "hover:bg-gray-700"}`}
-                aria-label="Profile Section"
-              >
-                Profile
-              </button>
-              <button
-                onClick={() => setActiveTab("orders")}
-                className={`w-full text-left px-4 py-3 rounded-lg mb-2 ${activeTab === "orders" ? "bg-gray-700" : "hover:bg-gray-700"}`}
-                aria-label="Orders Section"
-              >
-                Orders
-              </button>
-              <button
-                onClick={() => setActiveTab("settings")}
-                className={`w-full text-left px-4 py-3 rounded-lg ${activeTab === "settings" ? "bg-gray-700" : "hover:bg-gray-700"}`}
-                aria-label="Settings Section"
-              >
-                Settings
-              </button>
-            </nav>
           </div>
 
-          {/* Main Content */}
-          <div className="flex-1 p-6">
-            {errorMessage && (
-              <div className="mb-4 p-4 bg-green-100 text-green-700 rounded-lg" role="alert">
-                {errorMessage}
-              </div>
-            )}
+          <div className="lg:grid lg:grid-cols-12">
+            {/* Navigation */}
+            <div className="lg:col-span-3 border-r p-4 bg-gray-50">
+              <nav className="flex flex-row space-x-2 overflow-x-auto lg:flex-col lg:space-x-0 lg:space-y-2 lg:overflow-visible justify-evenly">
+                <button
+                  onClick={() => setActiveTab('profile')}
+                  className={`w-auto sm:w-full flex  items-center justify-center lg:justify-start space-x-2 p-3 rounded-lg ${
+                    activeTab === 'profile' ? 'bg-indigo-100 text-indigo-600' : 'hover:bg-gray-100'
+                  }`}
+                >
+                  <FaUser className="w-5 h-5 flex-shrink-0 " />
+                  <span className='hidden sm:block '>Profile</span>
+                </button>
+                <button
+                  onClick={() => setActiveTab('orders')}
+                  className={`w-auto sm:w-full flex items-center justify-center sm:justify-start space-x-2 p-3 rounded-lg ${
+                    activeTab === 'orders' ? 'bg-indigo-100 text-indigo-600' : 'hover:bg-gray-100'
+                  }`}
+                >
+                  <FaBox className="w-5 h-5 flex-shrink-0" />
+                  <span className='hidden sm:block'>Order History</span>
+                </button>
+                <button
+                  onClick={() => setActiveTab('security')}
+                  className={`w-auto sm:w-full flex items-center justify-center sm:justify-start space-x-2 p-3 rounded-lg ${
+                    activeTab === 'security' ? 'bg-indigo-100 text-indigo-600' : 'hover:bg-gray-100'
+                  }`}
+                >
+                  <FaCog className="w-5 h-5 flex-shrink-0" />
+                  <span className='hidden sm:block'>Setting</span>
+                </button>
+              </nav>
+            </div>
 
-            {/* Profile Section */}
-            {activeTab === "profile" && (
-              <div className="animate-fadeIn">
-                <h2 className="text-2xl font-bold mb-6">Profile Information</h2>
-                <form onSubmit={handleUpdateProfile}>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Full Name
-                      </label>
-                      <input
-                        type="text"
-                        defaultValue={dummyUser.name}
-                        className="w-full px-4 py-2 border rounded-lg  bg-gray-200 text-black focus:ring-2 focus:ring-black"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Email
-                      </label>
-                      <input
-                        type="email"
-                        defaultValue={dummyUser.email}
-                        className="w-full px-4 py-2 border rounded-lg bg-gray-200 text-black focus:ring-2 focus:ring-black"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Phone
-                      </label>
-                      <input
-                        type="tel"
-                        defaultValue={dummyUser.phone}
-                        className="w-full px-4 py-2 border rounded-lg  bg-gray-200 text-black focus:ring-2 focus:ring-black"
-                      />
-                    </div>
-                  </div>
-                  <button
-                    type="submit"
-                    className="mt-6 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                  >
-                    Update Profile
-                  </button>
-                </form>
-              </div>
-            )}
-
-            {/* Orders Section */}
-            {activeTab === "orders" && (
-              <div className="animate-fadeIn">
-                <h2 className="text-2xl font-bold mb-6">Order History</h2>
-                <div className="mb-6 relative">
-                  <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                  <input
-                    type="text"
-                    placeholder="Search orders..."
-                    value={searchOrder}
-                    onChange={(e) => setSearchOrder(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-                <div className="space-y-4">
-                  {filteredOrders.map((order) => (
-                    <div
-                      key={order.id}
-                      className="border rounded-lg p-4 hover:shadow-md transition-shadow"
-                    >
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <h3 className="font-semibold text-lg">{order.id}</h3>
-                          <p className="text-sm text-gray-600">{order.date}</p>
-                          <div className="mt-2">
-                            {order.items.map((item, index) => (
-                              <span
-                                key={index}
-                                className="inline-block bg-gray-100 rounded-full px-3 py-1 text-sm mr-2 mb-2"
-                              >
-                                {item}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <div className="flex items-center space-x-2 mb-2">
-                            {getStatusIcon(order.status)}
-                            <span className={`text-sm ${order.status === "Delivered" ? "text-green-500" : order.status === "Shipped" ? "text-blue-500" : "text-yellow-500"}`}>
-                              {order.status}
-                            </span>
-                          </div>
-                          <p className="font-bold">{order.total}</p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Settings Section */}
-            {activeTab === "settings" && (
-              <div className="animate-fadeIn">
-                <h2 className="text-2xl font-bold mb-6">Account Settings</h2>
+            {/* Content Area */}
+            <div className="lg:col-span-9 p-6">
+              {activeTab === 'profile' && (
                 <div className="space-y-6">
-                  <div className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className="flex items-center space-x-4">
-                      <FiBell className="text-xl" />
-                      <div>
-                        <h3 className="font-semibold">Notifications</h3>
-                        <p className="text-sm text-gray-600">Receive order updates and promotions</p>
-                      </div>
-                    </div>
-                    <label className="relative inline-flex items-center cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={notificationEnabled}
-                        onChange={() => setNotificationEnabled(!notificationEnabled)}
-                        className="sr-only peer"
-                      />
-                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                    </label>
-                  </div>
-
-                  <div className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className="flex items-center space-x-4">
-                      <FiKey className="text-xl" />
-                      <div>
-                        <h3 className="font-semibold">Change Password</h3>
-                        <p className="text-sm text-gray-600">Update your account password</p>
-                      </div>
-                    </div>
-                    <button className="px-4 py-2 text-blue-600 hover:bg-blue-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                      <FiChevronRight />
+                  <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-xl font-bold">Profile Information</h2>
+                    <button
+                      onClick={() => setEditMode(!editMode)}
+                      className="flex items-center space-x-2 text-indigo-600 hover:text-indigo-700 px-3 py-1.5 rounded-md"
+                    >
+                      <FaEdit className="w-4 h-4" />
+                      <span>{editMode ? 'Cancel' : 'Edit'}</span>
                     </button>
                   </div>
 
-                  <div className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className="flex items-center space-x-4">
-                      {theme === "light" ? <FiSun className="text-xl" /> : <FiMoon className="text-xl" />}
+                  <form onSubmit={handleProfileUpdate} className="space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
-                        <h3 className="font-semibold">Theme</h3>
-                        <p className="text-sm text-gray-600">Switch between light and dark mode</p>
+                        <label className="block text-sm font-medium text-gray-700">Name</label>
+                        <input
+                          name="name"
+                          value={userData.name}
+                          onChange={handleInputChange}
+                          disabled={!editMode}
+                          className="w-full px-4 py-2.5 rounded-md border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 disabled:bg-gray-100 transition-all"
+                        />
                       </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">Email</label>
+                        <input
+                          name="email"
+                          type="email"
+                          value={userData.email}
+                          onChange={handleInputChange}
+                          disabled={!editMode}
+                          className="w-full px-4 py-2.5 rounded-md border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 disabled:bg-gray-100 transition-all"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">Phone</label>
+                        <input
+                          name="phone"
+                          value={userData.phone}
+                          onChange={handleInputChange}
+                          disabled={!editMode}
+                          className="w-full px-4 py-2.5 rounded-md border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 disabled:bg-gray-100 transition-all"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">Address</label>
+                        <input
+                          name="address"
+                          value={userData.address}
+                          onChange={handleInputChange}
+                          disabled={!editMode}
+                          className="w-full px-4 py-2.5 rounded-md border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 disabled:bg-gray-100 transition-all"
+                        />
+                      </div>
+                    </div>
+                    {editMode && (
+                      <button
+                        type="submit"
+                        className="w-full md:w-auto px-6 py-2.5 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors font-medium"
+                      >
+                        Save Changes
+                      </button>
+                    )}
+                  </form>
+                </div>
+              )}
+
+              {/* Orders Section */}
+              {activeTab === "orders" && (
+                <div className="animate-fadeIn">
+                  <h2 className="text-2xl font-bold mb-6">Order History</h2>
+                  <div className="mb-6 relative">
+                    <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                    <input
+                      type="text"
+                      placeholder="Search orders..."
+                      value={searchOrder}
+                      onChange={(e) => setSearchOrder(e.target.value)}
+                      className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div className="space-y-4 overflow-auto max-h-72 hide-scrollbar">
+                    {filteredOrders.map((order) => (
+                      <div
+                        key={order.id}
+                        className="border rounded-lg p-4 hover:shadow-md transition-shadow"
+                      >
+                        <div className="flex justify-between items-center">
+                          <div>
+                            <h3 className="font-semibold text-lg">{order.id}</h3>
+                            <p className="text-sm text-gray-600">{order.date}</p>
+                            <div className="mt-2">
+                              {order.items.map((item, index) => (
+                                <span
+                                  key={index}
+                                  className="inline-block bg-gray-100 rounded-full px-3 py-1 text-sm mr-2 mb-2"
+                                >
+                                  {item}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <div className="flex items-center space-x-2 mb-2">
+                              {getStatusIcon(order.status)}
+                              <span className={`text-sm ${order.status === "Delivered" ? "text-green-500" : order.status === "Shipped" ? "text-blue-500" : "text-yellow-500"}`}>
+                                {order.status}
+                              </span>
+                            </div>
+                            <p className="font-bold">{order.total}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'security' && (
+                <div className="space-y-6">
+                  <h2 className="text-xl font-bold mb-6">Security Settings</h2>
+                  <form onSubmit={handlePasswordChange} className="space-y-6 max-w-md">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Current Password
+                      </label>
+                      <input
+                        type="password"
+                        name="currentPassword"
+                        value={security.currentPassword}
+                        onChange={handleSecurityChange}
+                        className="w-full px-4 py-2.5 rounded-md border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        New Password
+                      </label>
+                      <input
+                        type="password"
+                        name="newPassword"
+                        value={security.newPassword}
+                        onChange={handleSecurityChange}
+                        className="w-full px-4 py-2.5 rounded-md border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Confirm New Password
+                      </label>
+                      <input
+                        type="password"
+                        name="confirmPassword"
+                        value={security.confirmPassword}
+                        onChange={handleSecurityChange}
+                        className="w-full px-4 py-2.5 rounded-md border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500"
+                      />
                     </div>
                     <button
-                      onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-                      className="px-4 py-2 text-blue-600 hover:bg-blue-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      type="submit"
+                      className="w-full px-6 py-2.5 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors font-medium"
                     >
-                      {theme === "light" ? "Dark" : "Light"}
+                      Change Password
                     </button>
-                  </div>
+                  </form>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </div>

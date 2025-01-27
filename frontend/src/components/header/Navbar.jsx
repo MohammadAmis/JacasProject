@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { FaCartPlus } from "react-icons/fa";
 import { FiMenu, FiX, FiUser, FiBell, FiLogOut } from "react-icons/fi";
+import logo from "../../assets/Logo.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,7 +13,6 @@ const Navbar = () => {
   const menuItems = [
     { id: 1, name: "Home", path: "/" },
     { id: 2, name: "Products", path: "/products" },
-    { id: 3, name: "Recipe", path: "/recipe" },
     { id: 4, name: "About", path: "/about" },
     { id: 5, name: "Help", path: "/help" },
     { id: 6, name: "Dashboard", path: "/dashboard" },
@@ -41,12 +41,12 @@ const Navbar = () => {
 
   return (
     <nav className="bg-gradient-to-r from-blue-500 to-purple-600 shadow-lg h-16 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container-fluid mx-auto px-4 sm:px-6 lg:px-10 ">
         <div className="flex items-center justify-between h-16">
           {/* Logo and Mobile Menu Button */}
           <div className="flex items-center justify-between w-full md:w-auto">
             <Link to="/" className="text-2xl mobile:text-3xl text-white font-semibold">
-              JACAS
+              <img src={logo} alt="" className="h-12 w-full object-cover" />
             </Link>
 
             {/* Mobile menu button */}

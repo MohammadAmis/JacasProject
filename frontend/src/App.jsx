@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/header/Navbar';
 import Home from './components/pages/home/Home';
 import Products from './components/pages/product/ProductList';
-import Recipe from './components/pages/recipe/Recipe';
+import ProductDetail from './components/pages/home/ProductDetail';
 import About from './components/pages/about/About';
 import Help from './components/pages/help/Help';
 import Notifications from './components/pages/Notification';
@@ -19,12 +19,11 @@ const App = () => {
 
   return (
     <Router>
-      <Navbar />
-      
+      <Navbar/>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<Products />} />
-        <Route path="/recipe" element={<Recipe />} />
+        <Route path="/product-detail/:id" element={<ProductDetail />} />
         <Route path="/about" element={<About />} />
         <Route path="/help" element={<Help />} />
         <Route path='/cart' element={<Cart/>} />
@@ -35,7 +34,7 @@ const App = () => {
         <Route path='/register' element={<Register/>} />
         <Route path='/dashboard' element={<Dashboard/>} />
       </Routes>
-      {/* <Footer/> */}
+      <Footer/>
     </Router>
     
 

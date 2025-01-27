@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { FiBox, FiShoppingCart, FiUsers, FiTrendingUp } from "react-icons/fi"; // Replace FiBarChart2 with FiTrendingUp
+import { FiShoppingCart, FiUsers, FiTrendingUp,FiDollarSign } from "react-icons/fi";
 import { Chart as ChartJS, LineElement, Title, PointElement, CategoryScale, LinearScale, BarElement } from "chart.js";
 import { Line, Bar } from "react-chartjs-2";
 
@@ -57,7 +57,6 @@ const Overview = () => {
       },
     ],
   };
-  
 
   const products = [
     { name: "Premium Headphones", unitsSold: 245, revenue: "$12,250", status: "In Stock" },
@@ -78,11 +77,11 @@ const Overview = () => {
         {/* Dashboard Content */}
         <main className="p-6">
           {/* KPI Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-6">
             <MetricCard
-              title="Total Sales"
+              title="Total Revenue"
               value="$24,780"
-              icon={FiTrendingUp}
+              icon={FiDollarSign}
               color="border-blue-500"
             />
             <MetricCard
@@ -92,16 +91,22 @@ const Overview = () => {
               color="border-green-500"
             />
             <MetricCard
-              title="Total Products"
+              title="Growth"
               value="450"
-              icon={FiBox}
+              icon={FiTrendingUp}
               color="border-yellow-500"
+            />
+            <MetricCard
+              title="Active Customers"
+              value="89"
+              icon={FiUsers}
+              color="border-purple-500"
             />
             <MetricCard
               title="New Customers"
               value="89"
               icon={FiUsers}
-              color="border-purple-500"
+              color="border-pink-500"
             />
           </div>
 

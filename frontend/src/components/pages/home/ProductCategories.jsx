@@ -33,7 +33,7 @@ const ProductCategories = ({ productsByCategory }) => {
               <button
                 key={category.name}
                 onClick={() => setActiveTab(category.name)}
-                className={`group relative p-6 rounded-xl transition-all duration-300 
+                className={`group relative p-4 rounded-xl transition-all duration-300 
                   flex items-center justify-center space-x-4 overflow-hidden 
                   ${activeTab === category.name 
                     ? 'bg-gradient-to-br from-blue-500 to-purple-600 text-white shadow-lg'

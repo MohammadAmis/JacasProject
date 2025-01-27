@@ -1,21 +1,56 @@
 import { useState } from "react";
 import { FaHeart, FaStar } from "react-icons/fa";
 import PropTypes from 'prop-types';
+import { useNavigate } from "react-router-dom";
+import jackfruit_1 from '../../../assets/product_1.webp';
+import jackfruit_2 from '../../../assets/product_2.webp';
+import jackfruit_3 from '../../../assets/product_3.webp';
+import jackfruit_4 from '../../../assets/product_4.webp';
+
+
 
 const Card_Product = ({ product }) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const navigate = useNavigate();
+
+  const product_details= {
+    id: product._id,
+    name: 'Premium Wireless Headphones',
+    price: 299.99,
+    description: 'High-quality wireless headphones with noise cancellation and 30-hour battery life.',
+    images: [
+      jackfruit_1,
+      jackfruit_2,
+      jackfruit_3,
+      jackfruit_4
+    ],
+    specs: [
+      { name: 'Battery Life', value: '30 hours' },
+      { name: 'Bluetooth Version', value: '5.0' },
+      { name: 'Noise Cancellation', value: 'Active' },
+      { name: 'Water Resistance', value: 'IPX4' },
+      { name: 'Weight', value: '250g' },
+      { name: 'Warranty', value: '2 years' }
+    ]
+  };
 
   const calculateDiscount = (original, discounted) => {
     return Math.round(((original - discounted) / original) * 100);
   };
 
-  const addToCart=(id)=>{
-    alert("Product added to Cart ID : "+id);
-  }
-
-  const handleFavoriteClick = () => {
+  const handleFavoriteClick = (e) => {
+    e.stopPropagation(); // Prevent card click when clicking favorite
     setIsFavorite(!isFavorite);
+  };
+
+  const handleCardClick = () => {
+    // navigate(`/product-detail/${product._id}`, {  // this  is correct code for navigate to product detail page
+    //   state: { product } // Pass product data via state
+    // });
+    navigate(`/product-detail/${product_details.id}`, {
+      state: { product_details } // Pass product data via state
+    });
   };
 
   const renderStars = (rating) => {
@@ -30,10 +65,11 @@ const Card_Product = ({ product }) => {
   };
 
   return (
-    <div
-      className="relative w-72 bg-white rounded-xl shadow-md transition-all duration-300 hover:shadow-xl overflow-hidden"
+    <div 
+      className="relative w-72 bg-white rounded-xl shadow-md transition-all duration-300 hover:shadow-xl overflow-hidden cursor-pointer"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={handleCardClick}
     >
       <div className="relative h-96 transition-all duration-300" role="img" aria-label={product.name}>
         <img
@@ -58,37 +94,23 @@ const Card_Product = ({ product }) => {
           </button>
         </div>
         <div
-          className={`absolute bottom-0 left-0 right-0 bg-transparent  p-4 transform transition-all duration-300 ${isHovered ? "translate-y-0" : "translate-y-full"}`}
+          className={`absolute bottom-0 left-0 right-0 bg-transparent p-4 transform transition-all duration-300 ${isHovered ? "translate-y-0" : "translate-y-full"}`}
         >
           <h3 className="font-bold text-lg capitalize text-white mb-2">
             {product.name}
           </h3>
           <div className="flex items-center justify-between mb-2">
-            {/* <span className="line-through text-xl text-gray-200 ">
-            ₹{product.price}
-            </span> */}
             <span className="text-2xl font-bold text-white">
-            ₹{product.discount_price}
+              ₹{product.discount_price}
             </span>
-            <div className="flex gap-1">{renderStars(Math.ceil((Math.random()*10)/2))}</div>
-          </div>
-          <div className="flex items-center justify-center">
-            {/* <span className="text-sm text-white">
-              Rating: {product.rating}/5
-            </span> */}
-            <button
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200"
-              aria-label="Add to cart"
-              onClick={()=>addToCart(product._id)}
-            >
-              Add to Cart
-            </button>
+            <div className="flex gap-1">{renderStars(product.rating)}</div>
           </div>
         </div>
       </div>
     </div>
   );
 };
+
 
 // Add PropTypes to validate the 'product' prop
 Card_Product.propTypes = {

@@ -1,107 +1,119 @@
-import TestimonialCard from "./Testimonial_Card";
-import TestimonialData from "./TestimonialData";
+import { useEffect, useState } from 'react';
+import { FiSearch, FiFilter,FiArrowUp } from "react-icons/fi";
+import axios from 'axios';
 
-const Testimonial = () => {
-  return (
-    <div className="max-w-7xl mx-auto ">
-        <div className="carousel carousel-center max-w-full space-x-10 pt-4">
-            {TestimonialData.map((testimonial, index) => (
-                <div key={index} className="carousel-item">
-                    <TestimonialCard testimonial={testimonial} />
+const Orders = () => {
+    const [orders, setOrders] = useState([]);
+    const [showScrollTop, setShowScrollTop] = useState(false);
+
+    useEffect(() => {
+      const handleScroll = () => {
+        setShowScrollTop(window.pageYOffset > 300);
+      };
+  
+      window.addEventListener("scroll", handleScroll);
+      return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+    const scrollToTop = () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
+    useEffect(() => {
+        const fetchOrders = async () => {
+            try {
+                const response = await axios.get('/api/admin/fetch-order');
+                setOrders(response.data); // Ensure you access the data property
+            } catch (error) {
+                console.error("Error fetching orders:", error);
+            }
+        };
+        fetchOrders();
+    }, []);
+
+    return (
+        <div className="bg-white p-6 rounded-lg shadow-md">
+            <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-semibold">Orders</h2>
+                <div className="flex space-x-4">
+                    <div className="relative">
+                        <input
+                            type="text"
+                            placeholder="Search orders..."
+                            className="pl-10 pr-4 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                        <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                    </div>
+                    <button className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                        <FiFilter className="mr-2" />
+                        Filter
+                    </button>
                 </div>
-            ))}
+            </div>
+
+            <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-200">
+                        <tr>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
+                            {/* <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer ID</th> */}
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product Name</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-nowrap">Unit Price</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Payment</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Shipping Address</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                        {orders.map((order) => (
+                            <tr key={order.order_id}>
+                                <td className="px-6 py-4 whitespace-nowrap">{order.order_id}</td>
+                                {/* <td className="px-6 py-4 whitespace-nowrap">{order.user_id}</td> */}
+                                <td className="px-6 py-4 whitespace-nowrap">{order.product_name}</td>
+                                <td className="px-6 py-4 whitespace-nowrap">{parseInt(order.price)}</td>
+                                <td className="px-6 py-4 whitespace-nowrap">{order.quantity}</td>
+                                <td className="px-6 py-4 whitespace-nowrap">{parseInt(order.total)}</td>
+                                <td className="px-6 py-4 whitespace-nowrap">{order.payment_method}</td>
+                                <td className="px-6 py-4 whitespace-nowrap">{order.address}</td>
+                                <td className="px-6 py-4 whitespace-nowrap">{new Date(order.order_date).toLocaleString()}</td>
+                                <td className="px-6 py-4 whitespace-nowrap">
+                                    <span
+                                        className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                                            order.status === "delivered"
+                                                ? "bg-green-100 text-green-800"
+                                            : order.status === "shipped"
+                                                ? "bg-yellow-100 text-yellow-800"
+                                            : order.status === "cancelled"
+                                                ? "bg-red-100 text-red-800"
+                                            : order.status === "pending"
+                                                ? "bg-blue-100 text-blue-800"
+                                            : order.status === "processed"
+                                                ? "bg-gray-200 text-orange-800"
+                                            : "" // Default case, if any other status appears
+                                        }`}
+                                    >
+                                        {order.status}
+                                    </span>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+            {/* Scroll to Top Button */}
+      <button
+        onClick={scrollToTop}
+        className={`${
+          showScrollTop ? "opacity-100" : "opacity-0"
+        } fixed bottom-8 right-8 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50`}
+        aria-label="Scroll to top"
+      >
+        <FiArrowUp />
+      </button>
         </div>
-    </div>
-  );
+    );
 };
 
-export default Testimonial;
-
-
-import { useState } from "react";
-import PropTypes from "prop-types"; 
-import { FaQuoteLeft, FaQuoteRight, FaStar } from "react-icons/fa";
-import { motion } from "framer-motion";
-
-const TestimonialCard = ({ testimonial }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [imageError, setImageError] = useState(false);
-
-  const handleImageError = () => {
-    setImageError(true);
-  };
-
-  return (
-    <motion.div
-      className=" max-w-screen-mobile w-[400px] mx-auto bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 "
-      initial={{ opacity: 0, y: 0 }}
-      animate={{ opacity: 1, y: 0 }}
-      whileHover={{ scale: 1.02 }}
-    >
-      <div className="relative h-48 w-full  overflow-hidden">
-        {!imageError ? (
-          <img
-            src={`https://${testimonial.image}`}
-            alt={`${testimonial.name}'s dining experience at ${testimonial.restaurant}`}
-            className="w-full h-full object-cover "
-            onError={handleImageError}
-          />
-        ) : (
-          <div className="w-full h-full bg-gradient-to-r from-gray-200 to-gray-300 flex items-center justify-center">
-            <span className="text-gray-500">Image unavailable</span>
-          </div>
-        )}
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-black/50 to-transparent"></div>
-      </div>
-
-      <div className="p-6">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-xl font-semibold text-gray-800">{testimonial.name}</h3>
-          <div className="flex items-center">
-            {[...Array(testimonial.rating)].map((_, index) => (
-              <FaStar key={index} className="text-yellow-400" />
-            ))}
-          </div>
-        </div>
-
-        <div className="mb-4">
-          <FaQuoteLeft className="text-gray-400 mb-2" />
-          <p className="text-gray-600 leading-relaxed">
-            {isExpanded ? testimonial.fullReview : testimonial.shortReview}
-          </p>
-          <FaQuoteRight className="text-gray-400 ml-auto mt-2" />
-        </div>
-
-        <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
-          <span>{testimonial.date}</span>
-          <span>{testimonial.restaurant}</span>
-        </div>
-
-        <div className="flex justify-center">
-          <button
-            onClick={() => setIsExpanded(!isExpanded)}
-            className="px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full hover:from-orange-600 hover:to-red-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-opacity-50"
-            aria-label={isExpanded ? "Show less" : "Read more"}
-          >
-            {isExpanded ? "Show Less" : "Read More"}
-          </button>
-        </div>
-      </div>
-    </motion.div>
-  );
-};
-
-// PropTypes Validation
-TestimonialCard.propTypes = {
-  testimonial: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    rating: PropTypes.number.isRequired,
-    shortReview: PropTypes.string.isRequired,
-    fullReview: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
-    date: PropTypes.string.isRequired,
-    restaurant: PropTypes.string.isRequired,
-  }).isRequired,
-};
-
-export default TestimonialCard;
+export default Orders;

@@ -8,6 +8,9 @@ const FeaturedProduct = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Example product data structure
+
+
   useEffect(() => {
     const getProducts = async () => {
       try {
