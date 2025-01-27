@@ -6,7 +6,7 @@ export default defineConfig({
   assetsInclude: ['**/*.json', '**/*.PNG'], // Include both JSON and PNG files
   server: {
     proxy: {
-      '/api': 'http://localhost:4000',
+      '/api': 'https://global-venture.onrender.com',
     },
   },
   plugins: [react()],
