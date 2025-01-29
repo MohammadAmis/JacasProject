@@ -5,19 +5,19 @@ function Footer() {
   return (
     <footer className="bg-gray-900 text-gray-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 ">
           
           {/* Logo */}
-          <div className="flex items-center sm:col-span-2 lg:col-span-1">
+          <div className="flex justify-center items-center sm:col-span-2 lg:col-span-1">
             <img 
               src={logo} 
               alt="Company Logo" 
-              className="h-42 w-auto" // Adjust height as needed
+              className="h-24 sm:h-32 md:h-42 w-auto" // Adjust height as needed
             />
           </div>
 
           {/* Quick Links */}
-          <div>
+          <div className='justify-self-center'>
             <h3 className="text-white font-semibold mb-4">Quick Links</h3>
             <nav className="space-y-2">
               <a href="#" className="block hover:text-indigo-400 transition-colors">About</a>
@@ -27,7 +27,7 @@ function Footer() {
           </div>
 
           {/* Support */}
-          <div>
+          <div className='justify-self-center'>
             <h3 className="text-white font-semibold mb-4">Support</h3>
             <nav className="space-y-2">
               <a href="#" className="block hover:text-indigo-400 transition-colors">Contact Us</a>
@@ -38,7 +38,7 @@ function Footer() {
           </div>
 
           {/* Follow Us */}
-          <div className="sm:col-span-2 lg:col-span-1">
+          <div className="sm:col-span-2 lg:col-span-1 justify-self-center">
             <h3 className="text-white font-semibold mb-4">Follow Us</h3>
             <div className="flex space-x-4 mb-6">
               <a href="#" className="text-gray-400 hover:text-indigo-400 transition-colors">
@@ -56,7 +56,7 @@ function Footer() {
             </div>
 
             {/* Newsletter moved below Follow Us */}
-            <div className="space-y-4">
+            <div className="space-y-4 justify-self-center">
               <p className="text-sm">Join our newsletter for updates</p>
               <form className="flex gap-2">
                 <input 

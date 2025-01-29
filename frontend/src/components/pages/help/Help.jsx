@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { FiSearch, FiPhone, FiMail, FiClock } from "react-icons/fi";
-import { IoMdArrowDropdown } from "react-icons/io";
+import { FiSearch, FiPhone, FiMail, FiClock,FiTruck } from "react-icons/fi";
+import { IoMdArrowDropright } from "react-icons/io";
 import jackfruit from '../../../assets/jackfruit_1.jpg'
 
 const Help = () => {
@@ -35,8 +35,6 @@ const Help = () => {
     }
   ];
 
-
-
   const shippingInfo = {
     methods: [
       { method: "Standard Shipping", time: "5-7 business days", cost: "$5.99" },
@@ -44,76 +42,87 @@ const Help = () => {
     ],
     policy: "Free shipping on orders over $50. International shipping available."
   };
-
-  const handleSearch = (e) => {
-    setSearchQuery(e.target.value);
-  };
-
+  
   const toggleSection = (section) => {
     setActiveSection(activeSection === section ? null : section);
   };
 
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
+      </div>
+    );
   }
 
   return (
-    <div className="min-h-screen max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-      <div className="">
-        <h1 className="text-4xl font-bold text-center text-white mb-10">How Can We Help You?</h1>
+    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
+      <main className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <header className="text-center mb-6">
+          <h1 className="text-4xl font-bold text-green-800 mb-6">
+            How Can We Help You?
+          </h1>
+          <div className="max-w-full mx-auto relative">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search help articles..."
+              className="w-full px-14 py-4 rounded-xl border-2 border-green-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all"
+              aria-label="Search help center"
+            />
+            <FiSearch className="absolute left-5 top-1/2 -translate-y-1/2 text-green-600 text-xl" />
+          </div>
+        </header>
 
-        <section>
-          <div className="max-w-full mx-auto mb-10">
-            <div className="relative">
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={handleSearch}
-                placeholder="Search for help..."
-                className="w-full px-4 py-3 bg-gray-50 rounded-lg border-2 border-white focus:outline-none  pl-12"
-                aria-label="Search help topics"
-              />
-              <FiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-black text-xl" />
+        <section className="mb-10">
+          <div className="relative rounded-2xl overflow-hidden shadow-xl">
+            <img
+              src={jackfruit}
+              alt="Fresh jackfruit"
+              className="w-full h-96 object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-green-900 via-green-900/40">
+              <div className="absolute bottom-8 left-8 text-white max-w-2xl">
+                <h2 className="text-3xl font-bold mb-4">Jackfruit Knowledge Hub</h2>
+                <p className="text-lg opacity-90">
+                  Discover recipes, storage tips, and nutritional benefits of nature s
+                  wonder fruit
+                </p>
+              </div>
             </div>
           </div>
         </section>
 
-        <section className="mb-16">
-          {/* Hero Section */}
-          <div className="bg-gradient-to-r from-blue-300 to-purple-400 rounded-lg shadow-lg p-8 mb-12">
-            <img
-              src={jackfruit}
-              alt="Fresh jackfruit display"
-              className="w-[100%] h-[500px] object-fill rounded-lg mb-6"
-            />
-            <h2 className="text-2xl font-semibold text-black mb-4">Welcome to Our Help Center</h2>
-            <p className="text-gray-600">Find everything you need to know about our jackfruit products, from selection and preparation to storage and recipes.</p>
-          </div>
-        </section>
-
-        <section className="mb-16">
-          <h2 className="text-3xl font-semibold text-white mb-8">Frequently Asked Questions</h2>
-          <div className="space-y-4">
+        <section className="mb-10">
+          <h2 className="text-2xl font-bold text-green-900 mb-8">
+            Popular Questions
+          </h2>
+          <div className="grid gap-4">
             {faqs.map((faq, index) => (
               <div
                 key={index}
-                className="bg-gradient-to-r from-blue-300 to-purple-400 rounded-lg shadow-md overflow-hidden transition-all duration-300"
+                className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow"
               >
                 <button
                   onClick={() => toggleSection(`faq-${index}`)}
-                  className="w-full px-6 py-4 flex justify-between items-center text-left focus:outline-none"
+                  className="w-full px-6 py-5 flex items-center justify-between group"
                   aria-expanded={activeSection === `faq-${index}`}
                 >
-                  <span className="font-medium text-gray-800">{faq.question}</span>
-                  <IoMdArrowDropdown
-                    className={`text-2xl text-black transform transition-transform duration-300 ${
-                      activeSection === `faq-${index}` ? "rotate-180" : ""
-                    }`}
-                  />
+                  <div className="flex items-start">
+                    <IoMdArrowDropright
+                      className={`mt-1 mr-4 text-green-600 transform transition-transform ${
+                        activeSection === `faq-${index}` ? "rotate-90" : ""
+                      }`}
+                    />
+                    <span className="text-lg text-left font-medium text-green-900">
+                      {faq.question}
+                    </span>
+                  </div>
                 </button>
                 {activeSection === `faq-${index}` && (
-                  <div className="px-6 py-4 bg-green-50">
-                    <p className="text-gray-600">{faq.answer}</p>
+                  <div className="px-14 pb-6 pt-2 border-t border-green-50">
+                    <p className="text-green-700 leading-relaxed">{faq.answer}</p>
                   </div>
                 )}
               </div>
@@ -121,57 +130,67 @@ const Help = () => {
           </div>
         </section>
 
-
-        <section className="mb-16">
-          <h2 className="text-3xl font-semibold text-white mb-8">Shipping Information</h2>
-          <div className="bg-gradient-to-r from-blue-300 to-purple-400 rounded-lg shadow-md p-6">
-            <div className="mb-6">
-              <h3 className="text-xl font-semibold text-black mb-4">Shipping Methods</h3>
-              <div className="space-y-4">
-                {shippingInfo.methods.map((method, index) => (
-                  <div key={index} className="flex justify-between items-center border-b pb-4">
-                    <div>
-                      <h4 className="font-medium text-black">{method.method}</h4>
-                      <p className="text-sm text-black">{method.time}</p>
-                    </div>
-                    <span className="font-bold text-black">{method.cost}</span>
+        <section className="mb-10">
+          <h2 className="text-2xl font-bold text-green-900 mb-8">
+            Shipping & Delivery
+          </h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            {shippingInfo.methods.map((method, index) => (
+              <div
+                key={index}
+                className="bg-white p-6 rounded-xl shadow-sm border border-green-50"
+              >
+                <div className="flex items-center mb-4">
+                  <div className="bg-green-100 p-3 rounded-lg mr-4">
+                    <FiTruck className="text-green-600 text-xl" />
                   </div>
-                ))}
+                  <h3 className="text-lg font-semibold text-green-900">
+                    {method.method}
+                  </h3>
+                </div>
+                <div className="flex justify-between text-green-700">
+                  <span>{method.time}</span>
+                  <span className="font-medium">{method.cost}</span>
+                </div>
               </div>
-            </div>
-            <p className="text-black">{shippingInfo.policy}</p>
+            ))}
+          </div>
+          <div className="bg-white p-2 mt-4 rounded-xl shadow-sm border border-green-50">
+            <p className=" text-green-700 text-center">
+              {shippingInfo.policy}
+            </p>
           </div>
         </section>
 
-        <section className="mb-16">
-          {/* Contact Section */}
-          <div className="mt-12 bg-gradient-to-r from-blue-300 to-purple-400 rounded-lg shadow-lg p-8 text-center">
-            <h2 className="text-2xl font-semibold text-black mb-4">Still Need Help?</h2>
-            <p className="text-gray-600 mb-6">Our customer service team is here to assist you.</p>
-
+        <section className="mb-10">
+          <div className="bg-green-900 text-white rounded-2xl p-12 text-center">
+            <h2 className="text-3xl font-bold mb-4">Direct Support</h2>
+            <p className="mb-12 text-green-200 max-w-2xl mx-auto">
+              Our jackfruit experts are available 6 days a week to assist with any
+              inquiries
+            </p>
             <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center">
-              <FiPhone className="text-4xl text-black mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Phone Support</h3>
-              <p className="text-gray-600 text-center">1-800-JACKFRUIT</p>
+              <div className="p-6 bg-white/10 rounded-xl backdrop-blur-sm">
+                <FiPhone className="mx-auto text-3xl mb-4" />
+                <h3 className="font-semibold mb-2">Phone</h3>
+                <p className="text-green-200">1-800-JACKFRT</p>
+                <p className="text-sm text-green-300 mt-2">Mon-Fri: 9AM-6PM IST</p>
+              </div>
+              <div className="p-6 bg-white/10 rounded-xl backdrop-blur-sm">
+                <FiMail className="mx-auto text-3xl mb-4" />
+                <h3 className="font-semibold mb-2">Email Support</h3>
+                <p className="text-green-200">help@jackfruitstore.com</p>
+              </div>
+              <div className="p-6 bg-white/10 rounded-xl backdrop-blur-sm">
+                <FiClock className="mx-auto text-3xl mb-4" />
+                <h3 className="font-semibold mb-2">Business Hours</h3>
+                <p className="text-green-200">Mon-Fri: 9AM-6PM IST</p>
+              </div>
+              
             </div>
-            <div className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center">
-              <FiMail className="text-4xl text-black mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Email Support</h3>
-              <p className="text-gray-600 text-center">help@jackfruitstore.com</p>
-            </div>
-            <div className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center">
-              <FiClock className="text-4xl text-black mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Business Hours</h3>
-              <p className="text-gray-600 text-center">Mon-Fri: 9AM-6PM EST</p>
-            </div>
-          </div>
-            
           </div>
         </section>
-
-        
-      </div>
+      </main>
     </div>
   );
 };

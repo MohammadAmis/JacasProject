@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { FaLinkedin, FaTwitter, FaInstagram, FaArrowUp } from "react-icons/fa";
 import { IoLocationSharp } from "react-icons/io5";
 import { MdEmail, MdPhone } from "react-icons/md";
-import { motion, AnimatePresence } from "framer-motion"; // Import from framer-motion
+import { motion, AnimatePresence } from "framer-motion";
 import jackfruit from '../../../assets/jackfruit_1.jpg';
 import CEO from '../../../assets/CEO.jpg';
 import CTO from '../../../assets/CTO.jpg';
@@ -10,100 +10,130 @@ import Marketing from '../../../assets/Marketing.jpg';
 
 const About = () => {
   const [activeTab, setActiveTab] = useState("company");
-  const [showScrollTop, setShowScrollTop] = useState(false);
+  const [showScroll, setShowScroll] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setShowScrollTop(window.pageYOffset > 300);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  const checkScroll = () => {
+    if (window.scrollY > 300) {
+      setShowScroll(true);
+    } else {
+      setShowScroll(false);
+    }
   };
+
+  window.addEventListener('scroll', checkScroll);
+
+  const SocialIcon = ({ icon: Icon, href }) => (
+    <motion.a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      whileHover={{ scale: 1.1 }}
+      className="text-gray-600 hover:text-blue-600 transition-colors"
+    >
+      <Icon className="text-2xl" />
+    </motion.a>
+  );
+
+  const TeamCard = ({ member }) => (
+    <motion.div
+      className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
+      whileHover={{ y: -5 }}
+    >
+      <div className="relative h-80">
+        <img
+          src={member.image}
+          alt={member.name}
+          className="w-full h-full object-cover"
+          loading="lazy"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent" />
+      </div>
+      <div className="p-6 text-center">
+        <h3 className="text-2xl font-bold mb-2 text-gray-800">{member.name}</h3>
+        <p className="text-blue-600 font-medium mb-2">{member.role}</p>
+        <p className="text-gray-600">{member.description}</p>
+        <div className="flex justify-center gap-4 mt-4">
+          <SocialIcon icon={FaLinkedin} />
+          <SocialIcon icon={FaTwitter} />
+          <SocialIcon icon={FaInstagram} />
+        </div>
+      </div>
+    </motion.div>
+  );
 
   const teamMembers = [
     {
-      name: "Abdullah Izhar",
+      name: "John Doe",
       role: "CEO",
-      description: "Visionary leader with 15+ years of industry experience",
+      description: "John is the visionary behind our company.",
       image: CEO,
     },
     {
-      name: "Mohammad Amis",
+      name: "Jane Smith",
       role: "CTO",
-      description: "Tech innovator driving digital transformation",
+      description: "Jane leads our technology and innovation.",
       image: CTO,
     },
     {
-      name: "Saeed",
-      role: "Marketing Director",
-      description: "Creative mind behind our brand identity",
+      name: "Emily Johnson",
+      role: "Marketing Head",
+      description: "Emily drives our marketing strategies.",
       image: Marketing,
     },
   ];
 
-  const tabContent = {
+  const tabs = {
     company: (
       <motion.div
         key="company"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 20 }}
-        transition={{ duration: 0.3 }}
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: 20 }}
+        className="space-y-8"
       >
-        <h2 className="text-3xl font-bold mb-6 text-gray-800">About Our Company</h2>
-        <div className="grid md:grid-cols-2 gap-8">
-          <div>
-            <img
+        <h2 className="text-4xl font-bold text-gray-900 text-center">Our Story</h2>
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <img
               src={jackfruit}
-              alt="Company office"
-              className="rounded-lg w-full h-full object-cover"
-              onError={(e) => {
-                e.target.src = "https://via.placeholder.com/400x300?text=Company+Image";
-              }}
+              alt="Sustainable jackfruit products"
+              className="rounded-2xl shadow-xl h-[500px] w-full object-cover"
             />
-          </div>
-          <div>
-            <p className="text-black leading-relaxed">
-            Global Venture is a trailblazing Indian company that creates innovative products using the versatile superfood, jackfruit. Based in Mumbai, this sustainability-focused enterprise offers a range of thoughtfully developed, natural products designed to contribute to a healthier planet. Global Venture is committed to shaping a better future by producing items made from ethically cultivated and responsibly sourced ingredients, processed with meticulous hygiene standards. Their products are free from preservatives, have a shelf life of one year, and do not require refrigeration, combining convenience with eco-consciousness.
+          <div className="space-y-6">
+            <p className="text-lg leading-relaxed text-gray-700">
+              Global Venture is revolutionizing sustainable nutrition through innovative jackfruit-based solutions. 
+              Based in Mumbai, we combine traditional wisdom with modern technology to create eco-friendly, 
+              nutrient-rich products that promote both personal health and environmental sustainability.
             </p>
+            <div className="grid grid-cols-3 gap-4 text-center">
+              <div className="p-4 bg-white rounded-xl shadow-sm">
+                <p className="text-blue-600 font-bold text-2xl">15+</p>
+                <p className="text-gray-600">Years Experience</p>
+              </div>
+              <div className="p-4 bg-white rounded-xl shadow-sm">
+                <p className="text-blue-600 font-bold text-2xl">100%</p>
+                <p className="text-gray-600">Natural Ingredients</p>
+              </div>
+              <div className="p-4 bg-white rounded-xl shadow-sm">
+                <p className="text-blue-600 font-bold text-2xl">1M+</p>
+                <p className="text-gray-600">Products Sold</p>
+              </div>
+            </div>
           </div>
+          
         </div>
       </motion.div>
     ),
     team: (
       <motion.div
         key="team"
-        initial={{ opacity: 0, y: -20 }}
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 20 }}
-        transition={{ duration: 0.3 }}
+        className="space-y-12"
       >
-        <h2 className="text-3xl font-bold mb-3 text-gray-800 text-center">Our Team</h2>
-        <div className="grid md:grid-cols-3 gap-6">
+        <h2 className="text-4xl font-bold text-gray-900 text-center">Leadership Team</h2>
+        <div className="grid md:grid-cols-3 gap-8">
           {teamMembers.map((member) => (
-            <div
-              key={member.name}
-              className="bg-transparent rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300"
-            >
-              <img
-                src={member.image}
-                alt={member.name}
-                className="w-full h-96 object-fill rounded-full "
-                onError={(e) => {
-                  e.target.src = "https://via.placeholder.com/400x400?text=Team+Member";
-                }}
-              />
-              <div className="p-6">
-                <h3 className="text-xl font-semibold text-gray-800">{member.name}</h3>
-                <p className="text-blue-600 mb-2">{member.role}</p>
-                <p className="text-gray-600">{member.description}</p>
-              </div>
-            </div>
+            <TeamCard key={member.name} member={member} />
           ))}
         </div>
       </motion.div>
@@ -111,139 +141,169 @@ const About = () => {
     mission: (
       <motion.div
         key="mission"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 20 }}
-        transition={{ duration: 0.3 }}
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="grid md:grid-cols-2 gap-8"
       >
-        <div className="text-center max-w-3xl mx-auto h-fit">
-          <h2 className="text-3xl font-bold mb-3 text-gray-800">Purpose & Value</h2>
-          <div className="mb-4 p-8 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg">
-            <h3 className="text-2xl font-semibold mb-4 text-blue-600">Our Purpose</h3>
-            <p className="text-black leading-relaxed text-justify">
-            At Global Venture, we are driven by a passion for healthy, sustainable food. Our mission is to deliver ethically sourced, sustainably cultivated products to our customers' tables while exploring alternative foods that promote both personal well-being and environmental sustainability. We wholeheartedly support cruelty-free eating and advocate for a vegan lifestyle.
-            </p>
+        <div className="bg-white p-8 rounded-2xl shadow-lg">
+          <div className="flex items-center gap-4 mb-6">
+            <div className="p-3 bg-blue-100 rounded-full">
+              <IoLocationSharp className="text-blue-600 text-2xl" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900">Our Mission</h3>
           </div>
-          <div className="p-8 bg-gradient-to-r from-purple-50 to-pink-100 rounded-lg">
-            <h3 className="text-2xl font-semibold mb-3 text-purple-600">Our Value</h3>
-            <p className="text-black text-justify leading-relaxed">
-            Our core values include championing indigenous agricultural practices, ensuring fair compensation for farmers, prioritizing premium-quality natural produce, and offering it at the best value for our customers. We are committed to maintaining the highest standards of safety and implementing eco-friendly practices across all facets of our operations.
-            </p>
+          <p className="text-gray-700 leading-relaxed">
+            To transform global food systems through sustainable innovation, creating plant-based solutions 
+            that nourish people while regenerating our planet. We are committed to ethical sourcing, 
+            zero-waste production, and empowering local farming communities.
+          </p>
+        </div>
+        <div className="bg-white p-8 rounded-2xl shadow-lg">
+          <div className="flex items-center gap-4 mb-6">
+            <div className="p-3 bg-purple-100 rounded-full">
+              <MdEmail className="text-purple-600 text-2xl" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900">Core Values</h3>
           </div>
+          <ul className="space-y-4 text-gray-700">
+            <li className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-blue-600 rounded-full" />
+              Sustainable & ethical sourcing
+            </li>
+            <li className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-blue-600 rounded-full" />
+              Nutritional excellence
+            </li>
+            <li className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-blue-600 rounded-full" />
+              Environmental stewardship
+            </li>
+            <li className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-blue-600 rounded-full" />
+              Community empowerment
+            </li>
+          </ul>
         </div>
       </motion.div>
     ),
     contact: (
       <motion.div
         key="contact"
-        initial={{ opacity: 0, y: -20 }}
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 20 }}
-        transition={{ duration: 0.3 }}
+        className="grid lg:grid-cols-2 gap-12"
       >
-        <h2 className="text-3xl font-bold mb-6 text-gray-800">Contact Us</h2>
-        <div className="grid md:grid-cols-2 gap-8">
-          <div>
-            <form className="space-y-4">
-              <div>
-                <label htmlFor="name" className="block text-gray-700 mb-2">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  className="w-full px-4 py-2 border-2 border-gray-300 text-black bg-white rounded-lg"
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="email" className="block text-gray-700 mb-2">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  className="w-full px-4 py-2 border-2 border-gray-300 text-black bg-white rounded-lg"
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="message" className="block text-gray-700 mb-2">
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  rows="4"
-                  className="w-full px-4 py-2 border-2 border-gray-300 text-black bg-white rounded-lg "
-                  required
-                ></textarea>
-              </div>
-              <button
-                type="submit"
-                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-300"
-              >
-                Send Message
-              </button>
-            </form>
-          </div>
-          <div className="space-y-6">
-            <div className="flex items-center">
-              <IoLocationSharp className="text-2xl text-blue-600 mr-4" />
-              <p className="text-black">Building No 93 Ground Floor, Undriya Street (Chauki Mohalla) Nagpada , Mumbai, Maharashtra India 400008</p>
+        <div className="bg-white p-8 rounded-2xl shadow-lg">
+          <h2 className="text-3xl font-bold mb-8 text-gray-900">Get in Touch</h2>
+          <form className="space-y-4">
+            <div>
+              <label className="block text-gray-700 mb-1">Name</label>
+              <input
+                type="text"
+                className="w-full px-4 py-3 border-2 bg-white border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
             </div>
-            <div className="flex items-center">
-              <MdEmail className="text-2xl text-blue-600 mr-4" />
-              <p className="text-black">adimugeera@gmail.com</p>
+            <div>
+              <label className="block text-gray-700 mb-1">Email</label>
+              <input
+                type="email"
+                className="w-full px-4 py-3 border-2 bg-white border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
             </div>
-            <div className="flex items-center">
-              <MdPhone className="text-2xl text-blue-600 mr-4" />
-              <p className="text-gray-600">+91 9555891697</p>
+            <div>
+              <label className="block text-gray-700 mb-1">Message</label>
+              <textarea
+                rows="4"
+                className="w-full px-4 py-3 border-2 bg-white border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
             </div>
-            <div className="flex space-x-4 mt-6">
-              <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors duration-300">
-                <FaLinkedin className="text-2xl" />
-              </a>
-              <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors duration-300">
-                <FaTwitter className="text-2xl" />
-              </a>
-              <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors duration-300">
-                <FaInstagram className="text-2xl" />
-              </a>
+            <button
+              type="submit"
+              className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Send Message
+            </button>
+          </form>
+        </div>
+        <div className="space-y-8">
+          <div className="bg-white p-8 rounded-2xl shadow-lg">
+            <h3 className="text-2xl font-bold mb-6 text-gray-900">Contact Information</h3>
+            <div className="space-y-4">
+              <div className="flex items-start gap-4">
+                <IoLocationSharp className="text-2xl text-blue-600 mt-1" />
+                <p className="text-gray-700">
+                  Building No 93 Ground Floor, Undriya Street (Chauki Mohalla)<br />
+                  Nagpada, Mumbai, Maharashtra<br />
+                  India 400008
+                </p>
+              </div>
+              <div className="flex items-center gap-4">
+                <MdEmail className="text-2xl text-blue-600" />
+                <a href="mailto:adimugeera@gmail.com" className="text-gray-700 hover:text-blue-600">
+                  adimugeera@gmail.com
+                </a>
+              </div>
+              <div className="flex items-center gap-4">
+                <MdPhone className="text-2xl text-blue-600" />
+                <a href="tel:+919555891697" className="text-gray-700 hover:text-blue-600">
+                  +91 95558 91697
+                </a>
+              </div>
+            </div>
+            <div className="flex gap-6 mt-8">
+              <SocialIcon icon={FaLinkedin} />
+              <SocialIcon icon={FaTwitter} />
+              <SocialIcon icon={FaInstagram} />
             </div>
           </div>
         </div>
       </motion.div>
-    ),
+    )
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem] max-w-7xl mx-auto">
-      {/* Navigation Tabs */}
-      <div className="container mx-auto px-4 py-6">
-        <div className="flex flex-wrap justify-center mb-6 gap-4">
-          {["company", "team", "mission", "contact"].map((tab) => (
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        {/* Navigation Tabs */}
+        <div className="flex flex-wrap justify-center gap-4 mb-4">
+          {Object.keys(tabs).map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-6 py-2 rounded-full capitalize ${
+              className={`px-6 py-3 rounded-full font-medium transition-colors ${
                 activeTab === tab
-                  ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white"
-                  : "bg-white text-gray-600 hover:bg-gray-100"
-              } transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50`}
-              aria-label={`View ${tab} section`}
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-white text-gray-600 hover:bg-gray-100'
+              }`}
             >
-              {tab}
+              {tab.charAt(0).toUpperCase() + tab.slice(1)}
             </button>
           ))}
         </div>
 
-        {/* Animated Tab Content */}
-        <div className="bg-gradient-to-r from-blue-300 to-purple-400 rounded-lg shadow-lg px-8 p-5">
-          <AnimatePresence mode="wait">
-            {tabContent[activeTab]}
-          </AnimatePresence>
-        </div>
-        
+        {/* Content Area */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="bg-white rounded-2xl shadow-xl p-8"
+          >
+            {tabs[activeTab]}
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Scroll to Top */}
+        {showScroll && (
+          <motion.button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="fixed bottom-8 right-8 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700"
+            whileHover={{ scale: 1.1 }}
+          >
+            <FaArrowUp className="text-xl" />
+          </motion.button>
+        )}
       </div>
     </div>
   );
