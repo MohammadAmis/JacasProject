@@ -7,7 +7,7 @@ import bodyParser from 'body-parser'
 const app = express();
 
 app.use(cors({
-  origin: ['https://global-venture.onrender.com],
+  origin: ['https://jacasproject.onrender.com],
   credentials: true
 }));
 
