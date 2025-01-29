@@ -6,12 +6,7 @@ import bodyParser from 'body-parser'
 
 const app = express();
 
-app.use(cors({
-  origin: ['https://jacasproject.onrender.com'],
-  credentials: true
-}));
-
-
+app.use(cors());
 app.use(express.json());
 // Increase payload size limit
 app.use(bodyParser.json({ limit: '5mb' })); // Adjust the limit as per your need
