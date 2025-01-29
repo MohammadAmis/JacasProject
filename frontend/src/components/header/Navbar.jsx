@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { FaCartPlus } from "react-icons/fa";
 import { FiMenu, FiX, FiUser, FiBell, FiLogOut } from "react-icons/fi";
-import logo from "../../assets/Logo.png";
+// import logo from "../../assets/Logo.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -46,7 +46,8 @@ const Navbar = () => {
           {/* Logo and Mobile Menu Button */}
           <div className="flex items-center justify-between w-full md:w-auto">
             <Link to="/" className="text-2xl mobile:text-3xl text-white font-semibold">
-              <img src={logo} alt="" className="h-12 w-full object-cover" />
+{/*               <img src={logo} alt="" className="h-12 w-full object-cover" /> */}
+              Jacas
             </Link>
 
             {/* Mobile menu button */}
