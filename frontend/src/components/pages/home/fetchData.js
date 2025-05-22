@@ -4,10 +4,10 @@ export const fetchData = async (limit = null) => {
     
     try {
         const url = limit 
-            // ? `https://global-venture.onrender.com/api/users/fetch-products?limit=${limit}`
-            // : 'https://global-venture.onrender.com/api/users/fetch-products';
-            ?` /api/users/fetch-products?limit=${limit}`
-            : '/api/users/fetch-products'
+            ? `https://global-venture.onrender.com/api/users/fetch-products?limit=${limit}`
+            : 'https://global-venture.onrender.com/api/users/fetch-products';
+            // ?` /api/users/fetch-products?limit=${limit}`
+            // : '/api/users/fetch-products'
 
         
         
