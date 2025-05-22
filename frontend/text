@@ -1,179 +1,408 @@
-import { useState, useEffect } from "react";
-import { FiSearch, FiPhone, FiMail, FiClock } from "react-icons/fi";
-import { IoMdArrowDropdown } from "react-icons/io";
-import jackfruit from '../../../assets/jackfruit_1.jpg'
+import { useState ,useEffect} from "react";
+import { FiUpload, FiX } from "react-icons/fi";
+import { BiError } from "react-icons/bi";
+import { IoMdLock } from "react-icons/io";
+import axios from 'axios'
 
-const Help = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [activeSection, setActiveSection] = useState(null);
-  const [loading, setLoading] = useState(true);
+const ProductUploadForm = ({modelInfo}) => {
+  const [previewImage,setPreviewImage]= useState("https://via.placeholder.com/150")
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    description: "",
+    category: "",
+    price: "0",
+    purchasing_price: "0",
+    discount_price: "0",
+    stock: "0",
+    image: "",
+  });
 
+  // Dynamically update formData with modelInfo.data
   useEffect(() => {
-    setLoading(false);
-  }, []);
+    if (modelInfo?.data) {
+      const updatedFormData = { ...formData, ...modelInfo.data };
+      setFormData(updatedFormData);
 
-  const faqs = [
-    {
-      question: "What are the health benefits of jackfruit?",
-      answer: "Jackfruit is rich in nutrients including fiber, protein, vitamins A and C, and antioxidants. It's known to support heart health, boost immunity, and improve digestion."
-    },
-    {
-      question: "How should I store jackfruit products?",
-      answer: "Store unopened packaged jackfruit products in a cool, dry place. Once opened, refrigerate and consume within 3-5 days for optimal freshness."
-    },
-    {
-      question: "Are your jackfruit products organic?",
-      answer: "Yes, all our jackfruit products are certified organic, sourced from sustainable farms using natural farming practices."
-    },
-    {
-      question: "Do you offer international shipping?",
-      answer: "Yes, we ship to select international destinations. Shipping costs and delivery times vary by location."
-    },
-    {
-      question: "What is your return policy?",
-      answer: "We accept returns within 30 days of purchase. Products must be unopened and in original packaging."
+      // If an image URL is part of the data, update the preview
+      if (modelInfo.data.image) {
+        setPreviewImage(modelInfo.data.image);
+      }
     }
+  }, [modelInfo]);
+
+  const [errors, setErrors] = useState({});
+
+  const categories = [
+    'Raw','Soft','Prepared','Others'
   ];
 
-
-
-  const shippingInfo = {
-    methods: [
-      { method: "Standard Shipping", time: "5-7 business days", cost: "$5.99" },
-      { method: "Express Shipping", time: "2-3 business days", cost: "$12.99" }
-    ],
-    policy: "Free shipping on orders over $50. International shipping available."
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    validateField(name, value);
   };
 
-  const handleSearch = (e) => {
-    setSearchQuery(e.target.value);
+  const removeImage = () => {
+    setFormData((prev) => ({
+      ...prev,
+      image: ""
+    }));
+    setPreviewImage("https://via.placeholder.com/150")
+    
+  };
+    
+  const validateField = (name, value) => {
+    let newErrors = { ...errors };
+
+    switch (name) {
+      case "name":
+        if (!value.trim()) {
+          newErrors.name = "Product name is required";
+        } else {
+          delete newErrors.name;
+        }
+        break;
+
+      case "category":
+        if (!value) {
+          newErrors.category = "Please select a category";
+        } else {
+          delete newErrors.category;
+        }
+        break;
+
+      case "description":
+        if (!value.trim()) {
+          newErrors.description = "Product description is required";
+        } else {
+          delete newErrors.description;
+        }
+        break;
+
+      case "image":
+        if (!value) {
+          alert("Please Upload One Image")
+        }
+        break;
+
+      default:
+        break;
+    }
+
+    setErrors(newErrors);
   };
 
-  const toggleSection = (section) => {
-    setActiveSection(activeSection === section ? null : section);
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setFormData((prev) => ({ ...prev, image: file }));
+      setPreviewImage(URL.createObjectURL(file)); // Directly preview the file
+    }
   };
 
-  if (loading) {
-    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  const handleSubmit =  (e) => {
+    e.preventDefault();
+    
+    // try {
+      if(modelInfo?.operation){
+        uploadProduct()
+      }else{
+        updateProduct()
+      }
+    // } catch (error) {
+    //   console.log(error)
+    // }finally{
+    //   setIsProcessing(false)
+    // }
   }
 
-  return (
-    <div className="min-h-screen max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-      <div className="">
-        <h1 className="text-4xl font-bold text-center text-white mb-10">How Can We Help You?</h1>
+  const updateProduct = async () => {
+    setIsProcessing(true)
+    if (!formData._id) {
+      alert("Product ID is missing, unable to update.");
+      return;
+    }
 
-        <section>
-          <div className="max-w-full mx-auto mb-10">
-            <div className="relative">
+    try {
+      const response = await axios.put(`/api/admin/update-product/${formData._id}`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      alert("Product updated successfully!");
+    } catch (error) {
+      console.error(error);
+      alert("Error updating product.");
+    }finally{
+      setIsProcessing(false)
+    }
+  };
+
+  const uploadProduct=async()=>{
+    setIsProcessing(true)
+    try {
+      const response = await axios.post('/api/admin/upload-product', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      alert("Product uploaded successfully!");
+      
+    } catch (error) {
+      console.error(error);
+      alert("Error uploading product.");
+    }
+    finally{
+      setIsProcessing(false)
+    }
+    
+  }
+
+
+  return (
+      <div className="max-w-3xl mx-auto">
+        <div className="bg-white shadow-xl rounded-lg p-6 md:p-8">
+        <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+          {modelInfo.operation ?"Upload":"Update"} Product
+        </h2>
+
+
+          <form onSubmit={handleSubmit} className="space-y-3">
+            {/* Image Upload Section */}
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">
+                Product Images
+              </label>
+              <div className=" flex  justify-stretch border-2 border-gray-300 border-dashed rounded-md hover:border-indigo-500 transition-colors duration-200">
+              <div className="m-1 flex flex-1 justify-center p-4 border-2 border-gray-300 border-dashed rounded hover:border-indigo-500 transition-colors duration-200">
+                <div className="space-y-1 text-center">
+                  <FiUpload className="mx-auto h-12 w-12 text-gray-400" />
+                  <div className="flex text-sm text-gray-600">
+                    <label htmlFor="images" className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
+                      <span>Upload images</span>
+                      <input
+                      id="images"
+                      name="images"
+                      type="file"
+                      multiple
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      className="sr-only"
+                      />
+                    </label>
+                  </div>
+                  <p className="text-xs text-gray-500">PNG, JPG, GIF up to 5MB</p>
+                </div>
+              </div>
+          
+              {/* Image Previews */}
+              <div className="flex   m-1 p-4 border-2 border-gray-300 border-dashed rounded hover:border-indigo-500 transition-colors duration-200 ">
+                
+                  <div className="relative">
+                    <img
+                      src={previewImage}
+                      className="h-24 w-24 object-cover rounded-lg"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removeImage()}
+                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors duration-200"
+                    >
+                      <FiX className="h-4 w-4" />
+                    </button>
+                  </div>
+                
+              </div>
+            </div>
+
+            </div>
+
+            {/* Name Field */}
+            <div>
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                Product Name
+              </label>
               <input
                 type="text"
-                value={searchQuery}
-                onChange={handleSearch}
-                placeholder="Search for help..."
-                className="w-full px-4 py-3 bg-gray-50 rounded-lg border-2 border-white focus:outline-none  pl-12"
-                aria-label="Search help topics"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                className={`mt-1 block w-full  bg-white border-2  rounded-md shadow-sm ${errors.name ? "border-red-500" : "border-gray-300"} focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2.5`}
               />
-              <FiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-black text-xl" />
+              {errors.name && (
+                <p className="text-red-500 text-sm flex items-center mt-1">
+                  <BiError className="mr-1" /> {errors.name}
+                </p>
+              )}
             </div>
-          </div>
-        </section>
 
-        <section className="mb-16">
-          {/* Hero Section */}
-          <div className="bg-gradient-to-r from-blue-300 to-purple-400 rounded-lg shadow-lg p-8 mb-12">
-            <img
-              src={jackfruit}
-              alt="Fresh jackfruit display"
-              className="w-[100%] h-[500px] object-fill rounded-lg mb-6"
-            />
-            <h2 className="text-2xl font-semibold text-black mb-4">Welcome to Our Help Center</h2>
-            <p className="text-gray-600">Find everything you need to know about our jackfruit products, from selection and preparation to storage and recipes.</p>
-          </div>
-        </section>
+            {/* Description Field */}
+            <div>
+              <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+                Description
+              </label>
+              <textarea
+                id="description"
+                name="description"
+                rows="2"
+                value={formData.description}
+                onChange={handleInputChange}
+                className={`mt-1 block w-full bg-white border-2  rounded-md shadow-sm ${errors.description ? "border-red-500" : "border-gray-300"} focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2.5`}
+              />
+              {errors.description && (
+                <p className="text-red-500 text-sm flex items-center mt-1">
+                  <BiError className="mr-1" /> {errors.description}
+                </p>
+              )}
+            </div>
 
-        <section className="mb-16">
-          <h2 className="text-3xl font-semibold text-white mb-8">Frequently Asked Questions</h2>
-          <div className="space-y-4">
-            {faqs.map((faq, index) => (
-              <div
-                key={index}
-                className="bg-gradient-to-r from-blue-300 to-purple-400 rounded-lg shadow-md overflow-hidden transition-all duration-300"
-              >
-                <button
-                  onClick={() => toggleSection(`faq-${index}`)}
-                  className="w-full px-6 py-4 flex justify-between items-center text-left focus:outline-none"
-                  aria-expanded={activeSection === `faq-${index}`}
-                >
-                  <span className="font-medium text-gray-800">{faq.question}</span>
-                  <IoMdArrowDropdown
-                    className={`text-2xl text-black transform transition-transform duration-300 ${
-                      activeSection === `faq-${index}` ? "rotate-180" : ""
-                    }`}
-                  />
-                </button>
-                {activeSection === `faq-${index}` && (
-                  <div className="px-6 py-4 bg-green-50">
-                    <p className="text-gray-600">{faq.answer}</p>
+            {/*  Price, Purchasing Price, and Discount Price */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div>
+                <label htmlFor="price" className="block text-sm font-medium text-gray-700">
+                  Maximum Price
+                </label>
+                <div className="mt-1 relative rounded-md shadow-sm">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <span className="text-gray-500 sm:text-sm">$</span>
                   </div>
+                  <input
+                    type="number"
+                    id="price"
+                    name="price"
+                    min="0"
+                    step="1"
+                    value={formData.price}
+                    onChange={handleInputChange}
+                    className={`block w-full pl-7 bg-white border-2 rounded-md shadow-sm  focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2.5`}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label htmlFor="purchasing_price" className="block text-sm font-medium text-gray-700">
+                  Purchase Price
+                </label>
+                <div className="mt-1 relative rounded-md shadow-sm">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <span className="text-gray-500 sm:text-sm">$</span>
+                  </div>
+                  <input
+                    type="number"
+                    id="purchasing_price"
+                    name="purchasing_price"
+                    min="0"
+                    step="1"
+                    value={formData.purchasing_price}
+                    onChange={handleInputChange}
+                    className={`block w-full pl-7 bg-white border-2 rounded-md shadow-sm  focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2.5`}
+                  />
+                </div>
+                
+              </div>
+
+              <div>
+                <label htmlFor="discount_price" className="block text-sm font-medium text-gray-700">
+                  Discounted Price
+                </label>
+                <div className="mt-1 relative rounded-md shadow-sm">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <span className="text-gray-500 sm:text-sm">$</span>
+                  </div>
+                  <input
+                    type="number"
+                    id="discount_price"
+                    name="discount_price"
+                    min="0"
+                    step="1"
+                    value={formData.discount_price}
+                    onChange={handleInputChange}
+                    className={`block w-full pl-7 bg-white border-2 rounded-md shadow-sm  focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2.5`}
+                  />
+                </div>
+                
+              </div>
+            </div>
+            {/* { category and stock} */}
+            <div className="grid grid-cols-1 tablet:grid-cols-2 gap-6">
+              <div>
+                <label htmlFor="category" className="block text-sm font-medium text-gray-700">
+                  Category
+                </label>
+                <select
+                  id="category"
+                  name="category"
+                  value={formData.category}
+                  onChange={handleInputChange}
+                  className={`mt-1 block w-full bg-white border-2 rounded-md shadow-sm ${errors.category ? "border-red-500" : "border-gray-300"} focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2.5`}
+                >
+                  <option value="">Select a category</option>
+                  {categories.map((category) => (
+                    <option key={category} value={category}>
+                      {category}
+                    </option>
+                  ))}
+                </select>
+                {errors.category && (
+                  <p className="text-red-500 text-sm flex items-center mt-1">
+                    <BiError className="mr-1" /> {errors.category}
+                  </p>
                 )}
               </div>
-            ))}
-          </div>
-        </section>
 
-
-        <section className="mb-16">
-          <h2 className="text-3xl font-semibold text-white mb-8">Shipping Information</h2>
-          <div className="bg-gradient-to-r from-blue-300 to-purple-400 rounded-lg shadow-md p-6">
-            <div className="mb-6">
-              <h3 className="text-xl font-semibold text-black mb-4">Shipping Methods</h3>
-              <div className="space-y-4">
-                {shippingInfo.methods.map((method, index) => (
-                  <div key={index} className="flex justify-between items-center border-b pb-4">
-                    <div>
-                      <h4 className="font-medium text-black">{method.method}</h4>
-                      <p className="text-sm text-black">{method.time}</p>
-                    </div>
-                    <span className="font-bold text-black">{method.cost}</span>
-                  </div>
-                ))}
+              
+              <div>
+                <label htmlFor="stock" className="block text-sm font-medium text-gray-700">
+                  Stock
+                </label>
+                <input
+                  type="number"
+                  id="stock"
+                  name="stock"
+                  min="0"
+                  value={formData.stock}
+                  onChange={handleInputChange}
+                  className={`mt-1 block w-full bg-white border-2 rounded-md shadow-sm  focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2.5`}
+                />
+                
               </div>
             </div>
-            <p className="text-black">{shippingInfo.policy}</p>
-          </div>
-        </section>
 
-        <section className="mb-16">
-          {/* Contact Section */}
-          <div className="mt-12 bg-gradient-to-r from-blue-300 to-purple-400 rounded-lg shadow-lg p-8 text-center">
-            <h2 className="text-2xl font-semibold text-black mb-4">Still Need Help?</h2>
-            <p className="text-gray-600 mb-6">Our customer service team is here to assist you.</p>
+            {/* Submit Button */}
+            {/* <div className="pt-4">
+              <button
+                type="submit"
+                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200"
+              >
+                {modelInfo.operation ?"Upload":"Update"}
+              </button>
+            </div> */}
 
-            <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center">
-              <FiPhone className="text-4xl text-black mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Phone Support</h3>
-              <p className="text-gray-600 text-center">1-800-JACKFRUIT</p>
-            </div>
-            <div className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center">
-              <FiMail className="text-4xl text-black mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Email Support</h3>
-              <p className="text-gray-600 text-center">help@jackfruitstore.com</p>
-            </div>
-            <div className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center">
-              <FiClock className="text-4xl text-black mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Business Hours</h3>
-              <p className="text-gray-600 text-center">Mon-Fri: 9AM-6PM EST</p>
-            </div>
-          </div>
+            <div className="mt-4">
+            <button
+            type="submit"
+            disabled={isProcessing}
+            className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200"
+            >
+            {isProcessing ? (
+                <div className="flex items-center space-x-2">
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white" />
+                  <span>Processing...</span>
+                </div>
+            ) : (
+                <div className="flex items-center space-x-2">
+                  <IoMdLock className="w-5 h-5" />
+                  <span>{modelInfo.operation ?"Upload":"Update"}</span>
+                </div>
+            )}
             
-          </div>
-        </section>
+            </button>
 
-        
+            
+        </div>
+
+          </form>
+        </div>
       </div>
-    </div>
   );
 };
 
-export default Help;
+export default ProductUploadForm;

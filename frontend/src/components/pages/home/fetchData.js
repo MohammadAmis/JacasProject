@@ -1,20 +1,24 @@
 import axios from "axios";
 
 export const fetchData = async (limit = null) => {
+    
     try {
         const url = limit 
-            ? `https://global-venture.onrender.com/api/users/fetch-products?limit=${limit}`
-            : 'https://global-venture.onrender.com/api/users/fetch-products';
+            // ? `https://global-venture.onrender.com/api/users/fetch-products?limit=${limit}`
+            // : 'https://global-venture.onrender.com/api/users/fetch-products';
+            ?` /api/users/fetch-products?limit=${limit}`
+            : '/api/users/fetch-products'
 
-        const response = await axios.get(url);
-        return response.data; // Return fetched data
+        
+        
+        const response= await axios.get(url);
+        return response.data;
+        
     } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error(`Error fetching data:`, error);
         return null; // Return null on error
     }
 };
-
-
 
 
 // export const fetchData = async (limit = null) => {

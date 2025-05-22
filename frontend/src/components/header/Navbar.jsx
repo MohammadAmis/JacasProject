@@ -40,7 +40,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className="bg-gradient-to-r from-blue-500 to-purple-600 shadow-lg h-16 sticky top-0 z-50">
+    <nav className="bg-[#508D69] shadow-lg h-16 sticky top-0 z-50">
       <div className="container-fluid mx-auto px-4 sm:px-6 lg:px-10 ">
         <div className="flex items-center justify-between h-16">
           {/* Logo and Mobile Menu Button */}
@@ -53,11 +53,11 @@ const Navbar = () => {
             {/* Mobile menu button */}
             <div className="md:hidden flex items-center">
               <Link to="/cart" className="mr-4">
-                <FaCartPlus className="text-2xl text-white hover:text-blue-200 transition-colors" />
+                <FaCartPlus className="text-2xl text-white hover:text-green-900 transition-colors" />
               </Link>
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="p-2 rounded-md text-white hover:bg-blue-400 focus:outline-none focus:ring-2 focus:ring-white"
+                className="p-2 rounded-md text-white hover:bg-green-900 focus:outline-none focus:ring-2 focus:ring-white"
                 aria-label="Toggle menu"
               >
                 {isOpen ? <FiX className="h-6 w-6" /> : <FiMenu className="h-6 w-6" />}
@@ -75,8 +75,8 @@ const Navbar = () => {
                   className={({ isActive }) =>
                     `px-3 py-2 rounded-md text-medium font-medium transition-colors ${
                       isActive 
-                        ? "text-white bg-blue-400 bg-opacity-75" 
-                        : "text-white hover:bg-blue-400 hover:bg-opacity-75"
+                        ? "text-white bg-green-900 bg-opacity-75" 
+                        : "text-white hover:bg-green-900 hover:bg-opacity-75"
                     }`
                   }
                 >
@@ -89,11 +89,14 @@ const Navbar = () => {
           {/* Desktop Right Section */}
           <div className="hidden md:flex items-center ml-4">
             <Link to="/cart" className="mr-6">
-              <FaCartPlus className="text-2xl text-white hover:text-blue-200 transition-colors" />
+            
+              <FaCartPlus className="text-2xl text-white  hover:text-green-900 transition-colors"  />
+              
             </Link>
+            
             <div className="relative" ref={profileMenuRef}>
               <button
-                className="flex items-center bg-blue-400 bg-opacity-25 rounded-full p-2 hover:bg-opacity-50 transition-colors focus:outline-none focus:ring-2 focus:ring-white"
+                className="flex items-center bg-green-900 bg-opacity-25 rounded-full p-2 hover:bg-opacity-50 transition-colors focus:outline-none focus:ring-2 focus:ring-white"
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
                 aria-label="Profile menu"
               >
@@ -122,7 +125,7 @@ const Navbar = () => {
         {/* Mobile Menu */}
         <div
           ref={mobileMenuRef}
-          className={`md:hidden absolute w-full left-0 bg-gray-800 transition-all duration-300 ease-in-out overflow-hidden ${
+          className={`md:hidden absolute w-full left-0 bg-[#508D69] transition-all duration-300 ease-in-out overflow-hidden ${
             isOpen ? "max-h-96 py-2 border-t border-gray-700" : "max-h-0"
           }`}
         >
@@ -135,8 +138,8 @@ const Navbar = () => {
                 className={({ isActive }) =>
                   `block px-3 py-2 rounded-md text-base font-medium transition-colors ${
                     isActive
-                      ? "text-white bg-blue-400 bg-opacity-75"
-                      : "text-white hover:bg-blue-400 hover:bg-opacity-75"
+                      ? "text-white bg-green-900 bg-opacity-75"
+                      : "text-white bg-green-700 hover:bg-opacity-75"
                   }`
                 }
               >
@@ -148,7 +151,7 @@ const Navbar = () => {
                 <Link
                   key={item.id}
                   to={item.path}
-                  className="flex items-center px-3 py-2 text-white hover:bg-blue-400 hover:bg-opacity-75 rounded-md transition-colors"
+                  className="flex items-center px-3 py-2 text-white hover:bg-green-900 hover:bg-opacity-75 rounded-md transition-colors"
                   onClick={() => setIsOpen(false)}
                 >
                   {item.icon}

@@ -48,7 +48,7 @@ const ProductList = () => {
   }, [searchQuery, priceRange, originalProducts]); // Dependencies for filtering
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8 ">
+    <div className="max-w-7xl mx-auto px-4 py-4 my-3 rounded-xl bg-[#508D69]">
       <div className="mb-8 space-y-4">
         <div className="flex items-center justify-between gap-4 flex-wrap">
           <div className="relative flex-1 min-w-[300px]">

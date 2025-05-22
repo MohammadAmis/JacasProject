@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 import { FiEdit2, FiTrash2, FiUpload, FiRefreshCw, FiX, FiArrowUp , FiSearch,FiFilter} from "react-icons/fi";
 import ProductUploadForm from "./ProductUploadForm";
@@ -71,7 +72,7 @@ const Products = () => {
   const fetchProducts = async () => {
     try {
       setIsFetching(true); // Show loading indicator (if needed)
-      const response = await axios.get('https://global-venture.onrender.com/api/users/fetch-products');
+      const response = await axios.get('api/users/fetch-products');
       setOriginalProducts(response.data);
       setProducts(response.data);
     } catch (error) {

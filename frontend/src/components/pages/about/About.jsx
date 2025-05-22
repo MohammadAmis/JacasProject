@@ -265,14 +265,14 @@ const About = () => {
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         {/* Navigation Tabs */}
-        <div className="flex flex-wrap justify-center gap-4 mb-4">
+        <div className="flex flex-wrap justify-center gap-4 mb-4 ">
           {Object.keys(tabs).map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-6 py-3 rounded-full font-medium transition-colors ${
+              className={`px-6 py-3 rounded-full font-medium transition-colors  border-2 ${
                 activeTab === tab
-                  ? 'bg-blue-600 text-white'
+                  ? 'bg-[#508D69] text-white'
                   : 'bg-white text-gray-600 hover:bg-gray-100'
               }`}
             >
@@ -288,7 +288,7 @@ const About = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="bg-white rounded-2xl shadow-xl p-8"
+            className="bg-[#508D69] rounded-2xl shadow-xl p-8"
           >
             {tabs[activeTab]}
           </motion.div>

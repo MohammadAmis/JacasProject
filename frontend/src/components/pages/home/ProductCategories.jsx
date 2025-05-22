@@ -21,14 +21,14 @@ const ProductCategories = ({ productsByCategory }) => {
   return (
     <section className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-0 py-6">
       {/* Main Container */}
-      <div className="bg-white rounded-2xl shadow-2xl p-2 sm:p-4 lg:p-6">
+      <div className="bg-[#508D69] rounded-2xl shadow-2xl p-2 sm:p-4 lg:p-6">
         <h2 className="text-4xl font-bold text-black mb-6 text-center">
           Explore Our Categories
         </h2>
 
         {/* Category Cards Container */}
         <div className="mb-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 justify-evenly ">
+          <div className="grid grid-cols-4 gap-4 justify-evenly ">
             {categories.map((category) => (
               <button
                 key={category.name}
@@ -36,12 +36,12 @@ const ProductCategories = ({ productsByCategory }) => {
                 className={`group relative p-4 rounded-xl transition-all duration-300 
                   flex items-center justify-center space-x-4 overflow-hidden 
                   ${activeTab === category.name 
-                    ? 'bg-gradient-to-br from-blue-500 to-purple-600 text-white shadow-lg'
-                    : 'bg-gray-700 hover:bg-gray-600 text-gray-200'}
+                    ? 'bg-gradient-to-br from-green-800 to-green-600 text-white shadow-lg'
+                    : 'border hover:bg-gradient-to-br from-green-800 to-green-600 text-gray-200'}
                 `}
               >
                 <span className="flex-shrink-0 z-10">{category.icon}</span>
-                <span className="text-2xl font-semibold z-10">{category.name}</span>
+                <span className="text-2xl font-semibold z-10 hidden md:block">{category.name}</span>
                 {/* Hover effect layer */}
                 <div className={`absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-20 
                   transition-opacity duration-300 ${activeTab === category.name ? 'hidden' : ''}`}
