@@ -72,6 +72,7 @@ const Products = () => {
   const fetchProducts = async () => {
     try {
       setIsFetching(true); // Show loading indicator (if needed)
+      // const response = await axios.get('https://global-venture.onrender.com/api/users/fetch-products');
       const response = await axios.get('api/users/fetch-products');
       setOriginalProducts(response.data);
       setProducts(response.data);

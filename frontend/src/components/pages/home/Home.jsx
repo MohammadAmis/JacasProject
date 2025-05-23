@@ -22,7 +22,7 @@ const Home = () => {
     }, []);
   
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
+    <div className="min-h-screen bg-[#94B4C1]">
       {/* Hero Section */}
       <Carousel/>
 
@@ -30,14 +30,14 @@ const Home = () => {
       <FeaturedProduct/>
 
       {/* Categories Section */}
-      <ProductCategories
+      {/* <ProductCategories
         productsByCategory={{
           Food: products,
           // Recipes: recipeProducts,
           // Electronics: electronicProducts,
           // Others: otherProducts,
         }}
-      />
+      /> */}
 
       {/* Testimonials Section */}
       <Testimonial/>

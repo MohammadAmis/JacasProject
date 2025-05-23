@@ -40,24 +40,24 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className="bg-[#508D69] shadow-lg h-16 sticky top-0 z-50">
+    <nav className="bg-[#547792] shadow-lg h-16 sticky top-0 z-50">
       <div className="container-fluid mx-auto px-4 sm:px-6 lg:px-10 ">
         <div className="flex items-center justify-between h-16">
           {/* Logo and Mobile Menu Button */}
           <div className="flex items-center justify-between w-full md:w-auto">
             <Link to="/" className="text-2xl mobile:text-3xl text-white font-semibold">
-{/*               <img src={logo} alt="" className="h-12 w-full object-cover" /> */}
+              {/* <img src={logo} alt="" className="h-12 w-full object-cover" /> */}
               Jacas
             </Link>
 
             {/* Mobile menu button */}
             <div className="md:hidden flex items-center">
               <Link to="/cart" className="mr-4">
-                <FaCartPlus className="text-2xl text-white hover:text-green-900 transition-colors" />
+                <FaCartPlus className="text-2xl text-white hover:text-[#273F4F] transition-colors" />
               </Link>
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="p-2 rounded-md text-white hover:bg-green-900 focus:outline-none focus:ring-2 focus:ring-white"
+                className="p-2 rounded-md text-white hover:bg-[#273F4F] focus:outline-none focus:ring-2 focus:ring-white"
                 aria-label="Toggle menu"
               >
                 {isOpen ? <FiX className="h-6 w-6" /> : <FiMenu className="h-6 w-6" />}
@@ -75,8 +75,8 @@ const Navbar = () => {
                   className={({ isActive }) =>
                     `px-3 py-2 rounded-md text-medium font-medium transition-colors ${
                       isActive 
-                        ? "text-white bg-green-900 bg-opacity-75" 
-                        : "text-white hover:bg-green-900 hover:bg-opacity-75"
+                        ? "text-white bg-[#273F4F] " 
+                        : "text-white hover:bg-[#273F4F] "
                     }`
                   }
                 >
@@ -90,13 +90,13 @@ const Navbar = () => {
           <div className="hidden md:flex items-center ml-4">
             <Link to="/cart" className="mr-6">
             
-              <FaCartPlus className="text-2xl text-white  hover:text-green-900 transition-colors"  />
+              <FaCartPlus className="text-2xl text-white  hover:text-[#273F4F] transition-colors"  />
               
             </Link>
             
             <div className="relative" ref={profileMenuRef}>
               <button
-                className="flex items-center bg-green-900 bg-opacity-25 rounded-full p-2 hover:bg-opacity-50 transition-colors focus:outline-none focus:ring-2 focus:ring-white"
+                className="flex items-center bg-[#273F4F] bg-opacity-25 rounded-full p-2 hover:bg-opacity-50 transition-colors focus:outline-none focus:ring-2 focus:ring-white"
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
                 aria-label="Profile menu"
               >
@@ -104,12 +104,12 @@ const Navbar = () => {
               </button>
 
               {showProfileMenu && (
-                <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 z-50">
+                <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-[#94B4C1] ring-1 ring-black ring-opacity-5 z-50">
                   {profileMenuItems.map((item) => (
                     <Link
                       key={item.id}
                       to={item.path}
-                      className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                      className="flex items-center px-4 py-2 text-sm text-white hover:bg-[#273F4F] transition-colors"
                       onClick={() => setShowProfileMenu(false)}
                     >
                       {item.icon}
@@ -125,7 +125,7 @@ const Navbar = () => {
         {/* Mobile Menu */}
         <div
           ref={mobileMenuRef}
-          className={`md:hidden absolute w-full left-0 bg-[#508D69] transition-all duration-300 ease-in-out overflow-hidden ${
+          className={`md:hidden absolute w-full left-0 bg-[#547792] transition-all duration-300 ease-in-out overflow-hidden ${
             isOpen ? "max-h-96 py-2 border-t border-gray-700" : "max-h-0"
           }`}
         >
@@ -138,8 +138,8 @@ const Navbar = () => {
                 className={({ isActive }) =>
                   `block px-3 py-2 rounded-md text-base font-medium transition-colors ${
                     isActive
-                      ? "text-white bg-green-900 bg-opacity-75"
-                      : "text-white bg-green-700 hover:bg-opacity-75"
+                      ? "text-white bg-[#273F4F] "
+                      : "text-white "
                   }`
                 }
               >

@@ -94,28 +94,32 @@ const Cart = () => {
   const total = subtotal + tax + shippingCost - discountAmount;
 
   return (
-    <div className="h-[calc(100vh-5rem)] bg-gray-800  p-4 sm:px-6 lg:p-8">
+    <div className="h-[calc(100vh-5rem)] bg-[#94B4C1]  p-4 sm:px-6 lg:p-8">
       <div className="max-w-7xl mx-auto">
-        <div className="flex items-center justify-between p-2 rounded-xl mb-4  sticky top-[70px] lg:z-40 bg-gray-100  lg:py-3 lg:-mt-3">
+        {/* <div className="flex items-center justify-between p-2 rounded-xl mb-4  sticky top-[70px] lg:z-40 bg-gray-100  lg:py-3 lg:-mt-3">
           <h1 className="text-3xl font-bold text-gray-900">Your Cart</h1>
           <Link to="/" className="text-indigo-600 hover:text-indigo-700 flex items-center">
             <FiShoppingBag className="w-5 h-5 mr-1 " />
             <span className="hidden md:block ">Continue Shopping</span>
           </Link>
-        </div>
+        </div> */}
 
         <div className="lg:grid lg:grid-cols-12 lg:gap-8 ">
           {/* Cart Items */}
           <div className="lg:col-span-8 space-y-4 overflow-y-auto hide-scrollbar" style={{ maxHeight: "calc(100vh - 200px)" }}>
             {cartItems.length === 0 ? (
-              <div className="bg-white p-8 rounded-xl shadow-sm text-center">
-                <p className="text-gray-500 text-lg">Your cart is empty</p>
+              <div className="bg-[#547792] p-8 rounded-xl shadow-sm text-center">
+                <p className="text-black text-lg">Your cart is empty</p>
+                <Link to="/" className=" bg-[#273F4F] justify-center flex items-center gap-2 text-white px-4 py-2 rounded-lg mt-4">
+                  <FiShoppingBag className="w-5 h-5  " />
+                    <span className="hidden md:block ">Add Some Products</span>
+                </Link>
               </div>
             ) : (
               cartItems.map((item) => (
                 <div
                   key={item.id}
-                  className="bg-white p-4 rounded-xl shadow-sm transition-all hover:shadow-md"
+                  className="bg-[#547792] p-4 rounded-xl shadow-sm transition-all hover:shadow-md"
                 >
                   <div className="flex items-start gap-4">
                     <img
@@ -135,27 +139,27 @@ const Cart = () => {
                           className="text-gray-400 hover:text-red-500"
                           aria-label="Remove item"
                         >
-                          <FiX className="w-5 h-5" />
+                          <FiX className="w-5 h-5 text-white" />
                         </button>
                       </div>
                       <p className="text-gray-500">${item.price.toFixed(2)}</p>
                       
                       <div className="flex items-center justify-between mt-3">
-                        <div className="flex items-center gap-3 bg-gray-100 rounded-full px-4 py-2">
+                        <div className="flex items-center gap-3 bg-[#273F4F]  rounded-full px-4 py-2">
                           <button
                             onClick={() => updateQuantity(item.id, -1)}
                             className="text-gray-600 hover:text-indigo-600"
                             aria-label="Decrease quantity"
                           >
-                            <FiMinus className="w-4 h-4" />
+                            <FiMinus className="w-4 h-4 text-white" />
                           </button>
-                          <span className="text-gray-700 font-medium">{item.quantity}</span>
+                          <span className="text-white font-medium">{item.quantity}</span>
                           <button
                             onClick={() => updateQuantity(item.id, 1)}
                             className="text-gray-600 hover:text-indigo-600"
                             aria-label="Increase quantity"
                           >
-                            <FiPlus className="w-4 h-4" />
+                            <FiPlus className="w-4 h-4 text-white" />
                           </button>
                         </div>
                         <p className="text-lg font-medium text-gray-900">
@@ -171,23 +175,23 @@ const Cart = () => {
 
           {/* Order Summary */}
           <div className="lg:col-span-4 lg:sticky lg:top-20 h-fit lg:z-10 my-4 lg:my-0 ">
-            <div className="bg-white p-6 rounded-xl shadow-sm">
-              <h2 className="text-xl font-semibold text-gray-900 mb-6">Order Summary</h2>
+            <div className="bg-[#547792] p-6 rounded-xl shadow-sm text-black">
+              <h2 className="text-xl font-semibold  mb-6">Order Summary</h2>
               
               <div className="space-y-4">
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Subtotal</span>
-                  <span className="text-gray-900">${subtotal.toFixed(2)}</span>
+                  <span >Subtotal</span>
+                  <span >${subtotal.toFixed(2)}</span>
                 </div>
                 
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Shipping</span>
-                  <span className="text-gray-900">${shippingCost.toFixed(2)}</span>
+                  <span >Shipping</span>
+                  <span >${shippingCost.toFixed(2)}</span>
                 </div>
                 
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Tax</span>
-                  <span className="text-gray-900">${tax.toFixed(2)}</span>
+                  <span >Tax</span>
+                  <span >${tax.toFixed(2)}</span>
                 </div>
                 
                 {discount > 0 && (
@@ -199,8 +203,8 @@ const Cart = () => {
 
                 <div className="border-t border-gray-200 pt-4">
                   <div className="flex justify-between">
-                    <span className="text-lg font-semibold text-gray-900">Total</span>
-                    <span className="text-lg font-semibold text-gray-900">
+                    <span className="text-lg font-semibold ">Total</span>
+                    <span className="text-lg font-semibold ">
                       ${total.toFixed(2)}
                     </span>
                   </div>
@@ -213,11 +217,11 @@ const Cart = () => {
                       value={discountCode}
                       onChange={(e) => setDiscountCode(e.target.value)}
                       placeholder="Discount code"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#273F4F]"
                     />
                     <button
                       onClick={applyDiscount}
-                      className="px-4 sm:px-6 py-3 bg-gradient-to-r from-indigo-500 to-blue-500 text-white rounded-lg hover:opacity-90 transition-opacity text-sm sm:text-base whitespace-nowrap"
+                      className="px-4 sm:px-6 py-3 bg-[#273F4F] text-white rounded-lg hover:opacity-90 transition-opacity text-sm sm:text-base whitespace-nowrap"
                     >
                       Apply
                     </button>
@@ -225,7 +229,7 @@ const Cart = () => {
 
                   <button
                     onClick={openModal}
-                    className="w-full py-3 px-6 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors font-medium"
+                    className="w-full py-3 px-6 bg-[#273F4F] text-white rounded-lg hover:bg-gray-800 transition-colors font-medium"
                   >
                     Checkout Now
                   </button>

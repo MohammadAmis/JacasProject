@@ -56,10 +56,10 @@ const Help = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
+    <div className="min-h-screen bg-[#94B4C1]">
       <main className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
         <header className="text-center mb-6">
-          <h1 className="text-4xl font-bold text-green-800 mb-6">
+          <h1 className="text-4xl font-bold text-black mb-6">
             How Can We Help You?
           </h1>
           <div className="max-w-full mx-auto relative">
@@ -68,7 +68,7 @@ const Help = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search help articles..."
-              className="w-full px-14 py-4 rounded-xl border-2 border-green-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all"
+              className="w-full px-14 py-3 rounded-xl   focus:ring-2   bg-white "
               aria-label="Search help center"
             />
             <FiSearch className="absolute left-5 top-1/2 -translate-y-1/2 text-green-600 text-xl" />
@@ -76,7 +76,7 @@ const Help = () => {
         </header>
 
         <section className="mb-10">
-          <div className="relative rounded-2xl overflow-hidden shadow-xl">
+          <div className="relative  overflow-hidden shadow-xl">
             <img
               src={jackfruit}
               alt="Fresh jackfruit"
@@ -95,14 +95,14 @@ const Help = () => {
         </section>
 
         <section className="mb-10">
-          <h2 className="text-2xl font-bold text-green-900 mb-8">
+          <h2 className="text-2xl font-bold text-black mb-8">
             Popular Questions
           </h2>
           <div className="grid gap-4">
             {faqs.map((faq, index) => (
               <div
                 key={index}
-                className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow"
+                className="bg-[#547792] rounded-xl shadow-sm hover:shadow-md transition-shadow"
               >
                 <button
                   onClick={() => toggleSection(`faq-${index}`)}
@@ -111,18 +111,18 @@ const Help = () => {
                 >
                   <div className="flex items-start">
                     <IoMdArrowDropright
-                      className={`mt-1 mr-4 text-green-600 transform transition-transform ${
+                      className={`mt-1 mr-4 text-black transform transition-transform ${
                         activeSection === `faq-${index}` ? "rotate-90" : ""
                       }`}
                     />
-                    <span className="text-lg text-left font-medium text-green-900">
+                    <span className="text-lg text-left font-medium text-black">
                       {faq.question}
                     </span>
                   </div>
                 </button>
                 {activeSection === `faq-${index}` && (
-                  <div className="px-14 pb-6 pt-2 border-t border-green-50">
-                    <p className="text-green-700 leading-relaxed">{faq.answer}</p>
+                  <div className="px-14 pb-6 pt-2 border-t border-black">
+                    <p className="text-white leading-relaxed">{faq.answer}</p>
                   </div>
                 )}
               </div>
@@ -131,60 +131,60 @@ const Help = () => {
         </section>
 
         <section className="mb-10">
-          <h2 className="text-2xl font-bold text-green-900 mb-8">
+          <h2 className="text-2xl font-bold text-black mb-8">
             Shipping & Delivery
           </h2>
           <div className="grid md:grid-cols-2 gap-6">
             {shippingInfo.methods.map((method, index) => (
               <div
                 key={index}
-                className="bg-white p-6 rounded-xl shadow-sm border border-green-50"
+                className="bg-[#547792] p-6 rounded-xl shadow-sm b"
               >
                 <div className="flex items-center mb-4">
-                  <div className="bg-green-100 p-3 rounded-lg mr-4">
-                    <FiTruck className="text-green-600 text-xl" />
+                  <div className="bg-[#273F4F] p-3 rounded-lg mr-4">
+                    <FiTruck className="text-white text-xl" />
                   </div>
-                  <h3 className="text-lg font-semibold text-green-900">
+                  <h3 className="text-lg font-semibold text-black">
                     {method.method}
                   </h3>
                 </div>
-                <div className="flex justify-between text-green-700">
+                <div className="flex justify-between text-black">
                   <span>{method.time}</span>
                   <span className="font-medium">{method.cost}</span>
                 </div>
               </div>
             ))}
           </div>
-          <div className="bg-white p-2 mt-4 rounded-xl shadow-sm border border-green-50">
-            <p className=" text-green-700 text-center">
+          <div className="bg-[#547792] p-2 mt-4 rounded-xl shadow-sm ">
+            <p className=" text-black text-center">
               {shippingInfo.policy}
             </p>
           </div>
         </section>
 
         <section className="mb-10">
-          <div className="bg-green-900 text-white rounded-2xl p-12 text-center">
+          <div className="bg-[#547792] text-black rounded-2xl p-12 text-center">
             <h2 className="text-3xl font-bold mb-4">Direct Support</h2>
-            <p className="mb-12 text-green-200 max-w-2xl mx-auto">
+            <p className="mb-12 text-black max-w-2xl mx-auto">
               Our jackfruit experts are available 6 days a week to assist with any
               inquiries
             </p>
-            <div className="grid md:grid-cols-3 gap-8">
-              <div className="p-6 bg-white/10 rounded-xl backdrop-blur-sm">
-                <FiPhone className="mx-auto text-3xl mb-4" />
-                <h3 className="font-semibold mb-2">Phone</h3>
-                <p className="text-green-200">1-800-JACKFRT</p>
-                <p className="text-sm text-green-300 mt-2">Mon-Fri: 9AM-6PM IST</p>
+            <div className="grid md:grid-cols-3 gap-8 text-white">
+              <div className="p-6 bg-[#273F4F]  rounded-xl backdrop-blur-sm">
+                <FiPhone className="mx-auto text-3xl mb-4 " />
+                <h3 className="font-semibold mb-2 ">Phone</h3>
+                <p className="">1-800-JACKFRT</p>
+                <p className="text-sm  mt-2">Mon-Fri: 9AM-6PM IST</p>
               </div>
-              <div className="p-6 bg-white/10 rounded-xl backdrop-blur-sm">
+              <div className="p-6 bg-[#273F4F] rounded-xl backdrop-blur-sm">
                 <FiMail className="mx-auto text-3xl mb-4" />
                 <h3 className="font-semibold mb-2">Email Support</h3>
-                <p className="text-green-200">help@jackfruitstore.com</p>
+                <p>help@jackfruitstore.com</p>
               </div>
-              <div className="p-6 bg-white/10 rounded-xl backdrop-blur-sm">
+              <div className="p-6 bg-[#273F4F] rounded-xl backdrop-blur-sm">
                 <FiClock className="mx-auto text-3xl mb-4" />
                 <h3 className="font-semibold mb-2">Business Hours</h3>
-                <p className="text-green-200">Mon-Fri: 9AM-6PM IST</p>
+                <p>Mon-Fri: 9AM-6PM IST</p>
               </div>
               
             </div>

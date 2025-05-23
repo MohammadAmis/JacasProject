@@ -262,7 +262,7 @@ const About = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#94B4C1]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         {/* Navigation Tabs */}
         <div className="flex flex-wrap justify-center gap-4 mb-4 ">
@@ -270,10 +270,10 @@ const About = () => {
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-6 py-3 rounded-full font-medium transition-colors  border-2 ${
+              className={`px-6 py-3 rounded-xl font-medium transition-colors ring-1 ring-[#273F4F]   ${
                 activeTab === tab
-                  ? 'bg-[#508D69] text-white'
-                  : 'bg-white text-gray-600 hover:bg-gray-100'
+                  ? 'bg-[#273F4F]  text-white'
+                  : 'hover:bg-[#273F4F]  hover:text-white'
               }`}
             >
               {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -288,7 +288,7 @@ const About = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="bg-[#508D69] rounded-2xl shadow-xl p-8"
+            className="bg-[#547792]  shadow-xl p-8"
           >
             {tabs[activeTab]}
           </motion.div>

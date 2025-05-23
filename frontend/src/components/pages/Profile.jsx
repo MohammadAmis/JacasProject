@@ -98,11 +98,11 @@ const Profile = () => {
   };
 
   return (
-    <div className="h-[calc(100vh-5rem)] bg-gray-800 p-4 sm:px-6 lg:px-8">
+    <div className="h-[calc(100vh-5rem)] bg-[#94B4C1] p-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto lg:sticky  lg:top-24">
         <div className="bg-white rounded-xl shadow-lg overflow-hidden">
           {/* Profile Header */}
-          <div className="bg-indigo-600 text-white p-6">
+          <div className="bg-[#547792] text-white p-6">
             <div className="flex items-center space-x-4">
               <div className="w-20 h-20 rounded-full bg-indigo-400 flex items-center justify-center">
                 <span className="text-2xl">JD</span>
@@ -121,7 +121,7 @@ const Profile = () => {
                 <button
                   onClick={() => setActiveTab('profile')}
                   className={`w-auto sm:w-full flex  items-center justify-center lg:justify-start space-x-2 p-3 rounded-lg ${
-                    activeTab === 'profile' ? 'bg-indigo-100 text-indigo-600' : 'hover:bg-gray-100'
+                    activeTab === 'profile' ? 'bg-[#273F4F] text-white' : 'hover:bg-[#273F4F]'
                   }`}
                 >
                   <FaUser className="w-5 h-5 flex-shrink-0 " />
@@ -130,7 +130,7 @@ const Profile = () => {
                 <button
                   onClick={() => setActiveTab('orders')}
                   className={`w-auto sm:w-full flex items-center justify-center sm:justify-start space-x-2 p-3 rounded-lg ${
-                    activeTab === 'orders' ? 'bg-indigo-100 text-indigo-600' : 'hover:bg-gray-100'
+                    activeTab === 'orders' ? 'bg-[#273F4F] text-white' : 'hover:bg-[#273F4F]'
                   }`}
                 >
                   <FaBox className="w-5 h-5 flex-shrink-0" />
@@ -139,7 +139,7 @@ const Profile = () => {
                 <button
                   onClick={() => setActiveTab('security')}
                   className={`w-auto sm:w-full flex items-center justify-center sm:justify-start space-x-2 p-3 rounded-lg ${
-                    activeTab === 'security' ? 'bg-indigo-100 text-indigo-600' : 'hover:bg-gray-100'
+                    activeTab === 'security' ? 'bg-[#273F4F] text-white' : 'hover:bg-[#273F4F]'
                   }`}
                 >
                   <FaCog className="w-5 h-5 flex-shrink-0" />
@@ -230,7 +230,7 @@ const Profile = () => {
                       placeholder="Search orders..."
                       value={searchOrder}
                       onChange={(e) => setSearchOrder(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                      className="w-full pl-10 pr-4 py-2 border-2 rounded-lg focus:ring-2 focus:ring-[#273F4F] "
                     />
                   </div>
                   <div className="space-y-4 overflow-auto max-h-72 hide-scrollbar">

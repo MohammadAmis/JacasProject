@@ -21,7 +21,7 @@ const ProductCategories = ({ productsByCategory }) => {
   return (
     <section className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-0 py-6">
       {/* Main Container */}
-      <div className="bg-[#508D69] rounded-2xl shadow-2xl p-2 sm:p-4 lg:p-6">
+      <div className="bg-[#547792]  shadow-2xl p-2 sm:p-4 lg:p-6">
         <h2 className="text-4xl font-bold text-black mb-6 text-center">
           Explore Our Categories
         </h2>
@@ -52,7 +52,7 @@ const ProductCategories = ({ productsByCategory }) => {
         </div>
 
         {/* Products Container */}
-        <div className="bg-gray-800 rounded-xl p-4 shadow-inner">
+        <div >
           {categories.map((category) => (
             <div
               key={category.name}

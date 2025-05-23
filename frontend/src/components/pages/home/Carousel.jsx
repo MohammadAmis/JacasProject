@@ -71,7 +71,7 @@ const Carousel = () => {
 
   return (
     <div 
-      className="relative h-[calc(100vh-5rem)] max-w-7xl mx-auto   m-3 overflow-hidden z-10 rounded-xl "
+      className="relative h-[calc(100vh-5rem)] max-w-7xl mx-auto   pt-3 overflow-hidden z-10  "
       onMouseEnter={() => setAutoRotate(false)}
       onMouseLeave={() => setAutoRotate(true)}
     >
