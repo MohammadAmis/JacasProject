@@ -91,7 +91,8 @@ const Products = () => {
     
   const deleteProduct=async(id)=>{
     try {
-      const response=await axios.delete(`https://global-venture.onrender.com/api/users/fetch-products/${id}`)
+      // const response=await axios.delete(`https://global-venture.onrender.com/api/users/fetch-products/${id}`)
+      const response=await axios.delete(`api/users/fetch-products/${id}`)
       if(response.status===200){
         setProducts(products.filter(product => product._id !== id));
         setOriginalProducts(originalProducts.filter(product => product._id !== id));
