@@ -36,7 +36,8 @@ const Orders = () => {
         const fetchOrders = async () => {
             try {
                 setIsLoading(true);
-                const response = await axios.get('api/admin/fetch-order');
+                const response = await axios.get('https://global-venture.onrender.com/api/admin/fetch-order');
+                // const response = await axios.get('api/admin/fetch-order');
                 setOrders(response.data);
             } catch (error) {
                 console.error("Error fetching orders:", error);

@@ -1,5 +1,5 @@
 import { FaFacebook, FaTwitter, FaInstagram, FaGithub } from 'react-icons/fa';
-import logo from '../../../assets/Logo.png';
+// import logo from '../../../assets/Logo.png';
 
 function Footer() {
   return (
