@@ -3,9 +3,11 @@ import cors from 'cors';
 import userRoutes from './src/routes/user.routes.js';
 import adminRoutes from './src/routes/admin.routes.js';
 import bodyParser from 'body-parser'
+import cookieParser from 'cookie-parser';
 
 const app = express();
 
+app.use(cookieParser());
 app.use(cors());
 app.use(express.json());
 // Increase payload size limit

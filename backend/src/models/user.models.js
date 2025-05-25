@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 const userSchema = new mongoose.Schema({
     username: {
@@ -18,6 +18,12 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
+        select: false, // Do not return password in queries
+    },
+    role: {
+        type: String,
+        enum: ['user', 'admin'],
+        default: 'user',
     },
     address: String,
     phone_number: {
@@ -44,6 +50,13 @@ userSchema.pre('save', async function (next) {
 
 // Add comparePassword method
 userSchema.methods.comparePassword = async function (enteredPassword) {
+    console.log('🔑 Entered password:', enteredPassword);
+  console.log('🔐 Stored hash:', this.password);
+    // return await bcrypt.compare(enteredPassword, this.password);
+    // guard against missing data/hash
+    if(!enteredPassword || !this.password) {
+       return false;
+    }
     return await bcrypt.compare(enteredPassword, this.password);
 };
 

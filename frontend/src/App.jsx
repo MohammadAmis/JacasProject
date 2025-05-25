@@ -13,7 +13,7 @@ import CheckoutPage from './components/pages/cart/CheckOut';
 import Profile from './components/pages/Profile';
 import Dashboard from './components/pages/dashboard/Dashboard';
 import Footer from './components/pages/footer/Footer';
-
+import ProtectedRoute from './ProtectedRoute';
 
 const App = () => {
 
@@ -27,12 +27,36 @@ const App = () => {
         <Route path="/about" element={<About />} />
         <Route path="/help" element={<Help />} />
         <Route path='/cart' element={<Cart/>} />
-        <Route path='/checkout' element={<CheckoutPage/>} />
-        <Route path='/profile' element={<Profile/>} />
-        <Route path="/notifications" element={<Notifications />} />
         <Route path="/login" element={<Login />} />
         <Route path='/register' element={<Register/>} />
-        <Route path='/dashboard' element={<Dashboard/>} />
+        
+        <Route path='/checkout' 
+        element={
+          <ProtectedRoute allowedRoles={['user']}>
+            <CheckoutPage/>
+          </ProtectedRoute>  
+          } />
+        
+        <Route path='/profile' 
+        element={
+          <ProtectedRoute allowedRoles={['user', 'admin']}>
+            <Profile/>
+          </ProtectedRoute>
+          } 
+        />
+        <Route path="/notifications" 
+        element={
+          <ProtectedRoute allowedRoles={['user', 'admin']}>
+            <Notifications />
+          </ProtectedRoute>  
+        } />
+        
+        <Route path='/dashboard' 
+        element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <Dashboard />
+          </ProtectedRoute>
+        } />
       </Routes>
       <Footer/>
     </Router>

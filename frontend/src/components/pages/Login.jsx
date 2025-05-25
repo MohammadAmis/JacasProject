@@ -41,6 +41,7 @@ const Login = () => {
       const response = await axios.post('api/users/login', formData);
       
       if(response.request.status === 200){
+        console.log(response);
         navigate('/profile')
       }
       // Redirect or handle successful login here

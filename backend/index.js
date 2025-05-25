@@ -1,10 +1,13 @@
 import dotenv from 'dotenv';
+dotenv.config();
 import {connectDB} from './src/db/connectDB.js';
 import app from './app.js';
+
 // import { seedOrders } from './src/utils/fakeOrder.js';
 
 
-dotenv.config();
+
+
 const PORT = process.env.PORT || 5231;
 
 connectDB()

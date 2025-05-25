@@ -70,13 +70,14 @@ const Register = () => {
     try {
         const response = await axios.post('api/users/register', formData);
         if(response.request.status===201){
+          console.log(response)
           navigate('/login')
         }else{
-          alert(response.data.message)
+          alert(response)
         }
           
     } catch (error) {
-        alert(error.response?.data?.error || 'Registration failed');
+        alert(error.response.error || 'Registration failed');
     }
   };
 

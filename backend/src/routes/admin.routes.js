@@ -20,5 +20,4 @@ router.get('/fetch-order',fetchedOrder)
 
 router.get('/payment-method', fetchPaymentMethod)
 
-
 export default router;
