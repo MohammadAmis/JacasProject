@@ -2,27 +2,41 @@ import { useState, useEffect, useRef } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { FaCartPlus } from "react-icons/fa";
 import { FiMenu, FiX, FiUser, FiBell, FiLogOut } from "react-icons/fi";
-// import logo from "../../assets/Logo.png";
+import logo from "../../../src/assets/company-logo-3.png"; // Adjust the path as necessary
+import { useAuth } from "../../context/AuthContext";
 
 const Navbar = () => {
+  const { user, logout } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const mobileMenuRef = useRef(null);
   const profileMenuRef = useRef(null);
 
   const menuItems = [
-    { id: 1, name: "Home", path: "/" },
-    { id: 2, name: "Products", path: "/products" },
-    { id: 4, name: "About", path: "/about" },
-    { id: 5, name: "Help", path: "/help" },
-    { id: 6, name: "Dashboard", path: "/dashboard" },
+  { id: 1, name: "Home", path: "/" },
+  { id: 2, name: "Products", path: "/products" },
+  { id: 4, name: "About", path: "/about" },
+  { id: 5, name: "Help", path: "/help" },
   ];
 
-  const profileMenuItems = [
-    { id: 1, name: "Profile", path: "/profile", icon: <FiUser className="w-5 h-5" /> },
-    { id: 2, name: "Notifications", path: "/notifications", icon: <FiBell className="w-5 h-5" /> },
-    { id: 3, name: "Login", path: "/login", icon: <FiLogOut className="w-5 h-5" /> },
-  ];
+  if (user?.role === "admin") {
+    menuItems.push({ id: 6, name: "Dashboard", path: "/dashboard" });
+  }
+
+
+  const profileMenuItems = [];
+
+  if (user?.role === "user" || user?.role === "admin") {
+    profileMenuItems.push(
+      { id: 1, name: "Profile", path: "/profile", icon: <FiUser className="w-5 h-5" /> },
+      { id: 2, name: "Notifications", path: "/notifications", icon: <FiBell className="w-5 h-5" /> },
+      { id: 3, name: "Logout", path: "/", icon: <FiLogOut className="w-5 h-5" />, onClick: logout }
+    );
+  } else {
+    profileMenuItems.push(
+      { id: 4, name: "Login", path: "/login", icon: <FiLogOut className="w-5 h-5" /> }
+    );
+  }
 
   // Close menus when clicking outside
   useEffect(() => {
@@ -46,8 +60,8 @@ const Navbar = () => {
           {/* Logo and Mobile Menu Button */}
           <div className="flex items-center justify-between w-full md:w-auto">
             <Link to="/" className="text-2xl mobile:text-3xl text-white font-semibold">
-              {/* <img src={logo} alt="" className="h-12 w-full object-cover" /> */}
-              Jacas
+              <img src={logo} alt="" className="h-20 w-full object-cover" />
+              {/* Jacas */}
             </Link>
 
             {/* Mobile menu button */}
@@ -110,7 +124,13 @@ const Navbar = () => {
                       key={item.id}
                       to={item.path}
                       className="flex items-center px-4 py-2 text-sm text-white hover:bg-[#273F4F] transition-colors"
-                      onClick={() => setShowProfileMenu(false)}
+                      onClick={(e) => {
+                        if (item.name === "Logout") {
+                          e.preventDefault(); // Prevent navigating to `/`
+                          logout();           // Call the logout function
+                        }
+                        setShowProfileMenu(false);
+                      }}
                     >
                       {item.icon}
                       <span className="ml-3">{item.name}</span>

@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from "../../context/AuthContext"; 
 
 const Register = () => {
   const navigate=useNavigate()
+  const { register } = useAuth(); // Assuming you have a register function in your AuthContext
 
   const [formData, setFormData] = useState({
     username: "",
@@ -66,18 +67,16 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-        const response = await axios.post('api/users/register', formData);
-        if(response.request.status===201){
-          console.log(response)
-          navigate('/login')
-        }else{
-          alert(response)
-        }
+      const response = await register(formData);
           
+      if(response.request.status === 200){ 
+        console.log('Registration response :', response);
+        navigate('/')
+      }
+  
     } catch (error) {
-        alert(error.response.error || 'Registration failed');
+      console.log(error.response?.data?.error || "Registration failed");
     }
   };
 

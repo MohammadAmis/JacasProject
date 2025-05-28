@@ -1,5 +1,5 @@
 import { FaFacebook, FaTwitter, FaInstagram, FaGithub } from 'react-icons/fa';
-// import logo from '../../../assets/Logo.png';
+import logo from '../../../../src/assets/company-logo-3.png' // Adjust the path as necessary
 
 function Footer() {
   return (
@@ -8,13 +8,13 @@ function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 ">
           
           {/* Logo */}
-          <div className="flex items-center sm:col-span-2 lg:col-span-1">
-{/*             <img 
+          <div className="flex justify-items-center items-center sm:col-span-2 lg:col-span-1">
+            <img 
               src={logo} 
               alt="Company Logo" 
-              className="h-42 w-auto" // Adjust height as needed
-            /> */}
-            Jacas
+              className="h-96 w-auto mx-auto" // Adjust height as needed
+            />
+            {/* Jacas */}
           </div>
 
           {/* Quick Links */}

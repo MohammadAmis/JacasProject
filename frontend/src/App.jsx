@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/header/Navbar';
 import Home from './components/pages/home/Home';
 import Products from './components/pages/product/ProductList';
@@ -13,55 +13,56 @@ import CheckoutPage from './components/pages/cart/CheckOut';
 import Profile from './components/pages/Profile';
 import Dashboard from './components/pages/dashboard/Dashboard';
 import Footer from './components/pages/footer/Footer';
-import ProtectedRoute from './ProtectedRoute';
+import ProtectedRoute from './context/ProtectedRoute';
 
 const App = () => {
-
   return (
-    <Router>
-      <Navbar/>
+    <>
+      <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<Products />} />
         <Route path="/product-detail/:id" element={<ProductDetail />} />
         <Route path="/about" element={<About />} />
         <Route path="/help" element={<Help />} />
-        <Route path='/cart' element={<Cart/>} />
+        <Route path="/cart" element={<Cart />} />
         <Route path="/login" element={<Login />} />
-        <Route path='/register' element={<Register/>} />
-        
-        <Route path='/checkout' 
-        element={
-          <ProtectedRoute allowedRoles={['user']}>
-            <CheckoutPage/>
-          </ProtectedRoute>  
-          } />
-        
-        <Route path='/profile' 
-        element={
-          <ProtectedRoute allowedRoles={['user', 'admin']}>
-            <Profile/>
-          </ProtectedRoute>
-          } 
+        <Route path="/register" element={<Register />} />
+        <Route
+          path="/checkout"
+          element={
+            <ProtectedRoute allowedRoles={['user']}>
+              <CheckoutPage />
+            </ProtectedRoute>
+          }
         />
-        <Route path="/notifications" 
-        element={
-          <ProtectedRoute allowedRoles={['user', 'admin']}>
-            <Notifications />
-          </ProtectedRoute>  
-        } />
-        
-        <Route path='/dashboard' 
-        element={
-          <ProtectedRoute allowedRoles={['admin']}>
-            <Dashboard />
-          </ProtectedRoute>
-        } />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute allowedRoles={['user', 'admin']}>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/notifications"
+          element={
+            <ProtectedRoute allowedRoles={['user', 'admin']}>
+              <Notifications />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
-      <Footer/>
-    </Router>
-    
-
+      <Footer />
+    </>
   );
 };
 

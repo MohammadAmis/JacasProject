@@ -2,9 +2,10 @@ import { useState } from 'react';
 import { FaUser, FaBox, FaEdit, FaCog } from 'react-icons/fa';
 import { FiSearch } from 'react-icons/fi';
 import { MdOutlineLocalShipping, MdOutlinePending, MdOutlineDeliveryDining } from "react-icons/md";
-
+import { useAuth } from '../../context/AuthContext';
 
 const Profile = () => {
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState("profile");
   const [searchOrder, setSearchOrder] = useState("");
   const [editMode, setEditMode] = useState(false);  
@@ -13,9 +14,10 @@ const Profile = () => {
     newPassword: '',
     confirmPassword: ''
   });
+  
   const [userData, setUserData] = useState({
-    name: 'Mohammad Amis',
-    email: 'amis@gmail.com',
+    name: user?.username,
+    email: user?.email,
     phone: '+1 234 567 890',
     address: '123 Main St, New York, USA'
   });

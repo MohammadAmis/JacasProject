@@ -19,8 +19,7 @@ export const registerUser = async (req, res) => {
         if (existingUser) {
             return res.status(400).json({ error: 'Email is already registered' });
         }
-        
-        // Force role to 'user' for all new registrations:
+
         const user = new User({
             username,
             email,
@@ -30,20 +29,13 @@ export const registerUser = async (req, res) => {
 
         await user.save();
 
-        // Generate JWT token
-        const token = jwt.sign({ id: user._id,email:email, role: user.role }, JWT_SECRET, {
+        const token = jwt.sign({ id: user._id, email, role: user.role }, JWT_SECRET, {
             expiresIn: JWT_EXPIRES,
         });
-        res.cookie('token', token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
-            maxAge: 24 * 60 * 60 * 1000, // 1 day
-        });
-        // Send response
 
         return res.status(201).json({
             message: 'User registered successfully',
-            token, // for testing purpose only
+            token, // for client-side storage (e.g., localStorage)
             user: {
               id:        user._id,
               username:  user.username,
@@ -53,61 +45,49 @@ export const registerUser = async (req, res) => {
               status:    user.status,
               createdAt: user.createdAt,
             }
-          });
+        });
     } catch (error) {
         console.error('Error registering user:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
 
-
 export const loginUser = async (req, res) => {
-    const JWT_SECRET  = process.env.JWT_SECRET;
+    const JWT_SECRET = process.env.JWT_SECRET;
     const JWT_EXPIRES = process.env.JWT_EXPIRES_IN || '1d';
-  
+
     if (!JWT_SECRET) {
         console.error('Missing JWT_SECRET');
         return res.status(500).json({ error: 'Server configuration error' });
     }
-  
+
     const { email, password } = req.body;
     if (!email || !password) {
         return res.status(400).json({ error: 'Email and password are required' });
     }
-  
+
     try {
-        const user = await User
-        .findOne({ email })
-        .select('+password');;
+        const user = await User.findOne({ email }).select('+password');
         if (!user) {
             return res.status(400).json({ error: 'Invalid credentials' });
         }
-    
+
         const isMatch = await user.comparePassword(password);
         if (!isMatch) {
             return res.status(400).json({ error: 'Invalid credentials' });
         }
-    
+
         const payload = { id: user._id, email: user.email, role: user.role };
-        const token   = jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES });
-    
-        res.cookie('token', token, {
-            httpOnly: true,
-            secure:   process.env.NODE_ENV === 'production',
-            maxAge:   24 * 60 * 60 * 1000,
-            sameSite: 'lax',
-        });
-    
+        const token = jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES });
+
         return res.status(200).json({
             message: 'Login successful',
+            token,
             user: {
-            id:        user._id,
-            username:  user.username,
-            email:     user.email,
-            role:      user.role,
-            image:     user.image,
-            status:    user.status,
-            createdAt: user.createdAt,
+              id:       user._id,
+              username: user.username,
+              email:    user.email,
+              role:     user.role,
             }
         });
     } catch (err) {
@@ -115,22 +95,29 @@ export const loginUser = async (req, res) => {
         return res.status(500).json({ error: 'Internal Server Error' });
     }
 };
-  
 
 export const logoutUser = (req, res) => {
-    // Clear the cookie named “token”
-    res.clearCookie('token', {
-        httpOnly: true,
-        secure:   process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        path:     '/',             // ensure it matches the path you set it on
-    });
+    // No cookie to clear — just send a logout confirmation
     return res.status(200).json({ message: 'Logged out successfully' });
 };
-  
 
-export const getCurrentUser = (req, res) => {
-    // protectRoute will have set req.user = { id, email, role, ... }
-    const { id, email, role } = req.user;
-    return res.json({ id, email, role });
+export const getCurrentUser = async (req, res) => {
+    try {
+        if (!req.user || !req.user.id) {
+            return res.status(401).json({ error: 'Not authenticated' });
+        }
+
+        const user = await User.findById(req.user.id)
+            .select('id username email role status image createdAt')
+            .lean();
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        return res.status(200).json({ user });
+    } catch (err) {
+        console.error('Error in getCurrentUser:', err);
+        return res.status(500).json({ error: 'Server error' });
+    }
 };

@@ -50,10 +50,6 @@ userSchema.pre('save', async function (next) {
 
 // Add comparePassword method
 userSchema.methods.comparePassword = async function (enteredPassword) {
-    console.log('🔑 Entered password:', enteredPassword);
-  console.log('🔐 Stored hash:', this.password);
-    // return await bcrypt.compare(enteredPassword, this.password);
-    // guard against missing data/hash
     if(!enteredPassword || !this.password) {
        return false;
     }

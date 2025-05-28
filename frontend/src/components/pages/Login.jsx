@@ -2,14 +2,16 @@ import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axios from 'axios';
 import { Link,useNavigate } from 'react-router-dom'; // Assuming you're using React Router
-
+import { useAuth } from "../../context/AuthContext";
 
 const Login = () => {
     const navigate=useNavigate()
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+    const { login } = useAuth();
+    const [formData, setFormData] = useState({
+      email: "adi@gmail.com",
+      password: "11111111",
+    });
+  
 
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
@@ -38,15 +40,14 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('api/users/login', formData);
-      
-      if(response.request.status === 200){
-        console.log(response);
-        navigate('/profile')
+      const response = await login(formData);
+          
+      if(response.request.status === 200){ 
+        console.log('Login response Authcontext:', response);
+        navigate('/')
       }
-      // Redirect or handle successful login here
     } catch (error) {
-      alert(error.response?.data?.error || "Login failed");
+      // console.log(error.response?.data?.error || "Login failed");
     }
   };
 
@@ -72,6 +73,7 @@ const Login = () => {
                 id="email"
                 name="email"
                 type="email"
+                
                 required
                 className={`mt-1 block w-full px-3 py-2 bg-white border rounded-md shadow-sm focus:outline-none focus:ring-2 transition-colors ${
                   errors.email
@@ -137,7 +139,7 @@ const Login = () => {
 
           <div className="text-center mt-4">
             <p className="text-sm text-gray-600">
-              Don't have an account?{" "}
+              Do not have an account?{" "}
               <Link
                 to="/register"
                 className="font-medium text-indigo-600 hover:text-indigo-500 transition-colors"
