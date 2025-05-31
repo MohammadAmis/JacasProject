@@ -21,7 +21,7 @@ const ProductCategories = ({ productsByCategory }) => {
   return (
     <section className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-0 py-6">
       {/* Main Container */}
-      <div className="bg-[#547792]  shadow-2xl p-2 sm:p-4 lg:p-6">
+      <div className="bg-white  shadow-2xl p-2 sm:p-4 lg:p-6">
         <h2 className="text-4xl font-bold text-black mb-6 text-center">
           Explore Our Categories
         </h2>

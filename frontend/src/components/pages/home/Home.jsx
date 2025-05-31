@@ -5,7 +5,7 @@ import Testimonial from './testimonial/Testimonial';
 const Home = () => {
 
   return (
-    <div className="min-h-screen bg-[#94B4C1]">
+    <div className="min-h-screen bg-white">
       <Carousel />
       <FeaturedProduct />
       <Testimonial />
