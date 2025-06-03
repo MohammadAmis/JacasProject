@@ -109,9 +109,13 @@ const ProductUploadForm = ({ modelInfo,closeModal }) => {
     }
 
     try {
-      const response = await axios.put(`/api/admin/update-product/${formData._id}`, formData, {
+      
+      const response = await axios.put(`https://global-venture.onrender.com/api/admin/update-product/${formData._id}`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
+      // const response = await axios.put(`/api/admin/update-product/${formData._id}`, formData, {
+      //   headers: { 'Content-Type': 'multipart/form-data' },
+      // });
       alert("Product updated successfully!");
     } catch (error) {
       console.error(error);
