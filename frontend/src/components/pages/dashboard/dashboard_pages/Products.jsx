@@ -72,7 +72,9 @@ const Products = () => {
   const fetchProducts = async () => {
     try {
       setIsFetching(true); // Show loading indicator (if needed)
-      const response = await axios.get('api/users/fetch-products');
+      
+      const response = await axios.get('https://global-venture.onrender.com/api/users/fetch-products');
+      // const response = await axios.get('api/users/fetch-products');
       setOriginalProducts(response.data);
       setProducts(response.data);
     } catch (error) {
@@ -91,8 +93,8 @@ const Products = () => {
     
   const deleteProduct=async(id)=>{
     try {
-      // const response=await axios.delete(`https://global-venture.onrender.com/api/users/fetch-products/${id}`)
-      const response=await axios.delete(`api/users/fetch-products/${id}`)
+      const response=await axios.delete(`https://global-venture.onrender.com/api/users/fetch-products/${id}`)
+      // const response=await axios.delete(`api/users/fetch-products/${id}`)
       if(response.status===200){
         setProducts(products.filter(product => product._id !== id));
         setOriginalProducts(originalProducts.filter(product => product._id !== id));
