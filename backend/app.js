@@ -3,10 +3,25 @@ import express from 'express';
 import userRoutes from './src/routes/user.routes.js';
 import adminRoutes from './src/routes/admin.routes.js';
 import bodyParser from 'body-parser'
+import cors from cors;
 
 const app = express();
 
 
+
+// Allow only your frontend origin
+const allowedOrigins = ['https://jacasproject.onrender.com'];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true // if using cookies
+}));
 
 app.use(express.json());
 // Increase payload size limit
