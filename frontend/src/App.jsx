@@ -1,3 +1,4 @@
+// app.jsx
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/header/Navbar';
 import Home from './components/pages/home/Home';
@@ -5,7 +6,6 @@ import Products from './components/pages/product/ProductList';
 import ProductDetail from './components/pages/home/ProductDetail';
 import About from './components/pages/about/About';
 import Help from './components/pages/help/Help';
-import Notifications from './components/pages/Notification';
 import Login from './components/pages/Login';
 import Register from './components/pages/Register';
 import Cart from './components/pages/cart/Cart';
@@ -44,14 +44,7 @@ const App = () => {
             </ProtectedRoute>
           }
         />
-        <Route
-          path="/notifications"
-          element={
-            <ProtectedRoute allowedRoles={['user', 'admin']}>
-              <Notifications />
-            </ProtectedRoute>
-          }
-        />
+        
         <Route
           path="/dashboard"
           element={

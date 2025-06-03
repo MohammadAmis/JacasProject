@@ -39,6 +39,7 @@ export function AuthProvider({ children }) {
       const { data } = await axios.post('/api/users/register', form);
       localStorage.setItem('token', data.token);
       await fetchUser(data.token);
+      return true; // Return data for further processing if needed
     } catch (error) {
       // console.error("Registration failed:", error);
     }
@@ -49,6 +50,7 @@ export function AuthProvider({ children }) {
       const { data } = await axios.post('/api/users/login', form);
       localStorage.setItem('token', data.token);
       await fetchUser(data.token);
+      return true; // Return data for further processing if needed
     } catch (error) {
       // console.error("Login failed:", error);
     }

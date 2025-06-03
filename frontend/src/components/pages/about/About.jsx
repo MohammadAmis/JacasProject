@@ -1,5 +1,8 @@
-import { useState } from "react";
-import { FaLinkedin, FaTwitter, FaInstagram, FaArrowUp } from "react-icons/fa";
+import { useState, useEffect } from "react";
+import { 
+  FaLinkedin, FaTwitter, FaInstagram, FaArrowUp,
+  FaBuilding, FaUsers, FaBullseye, FaEnvelope 
+} from "react-icons/fa";
 import { IoLocationSharp } from "react-icons/io5";
 import { MdEmail, MdPhone } from "react-icons/md";
 import { motion, AnimatePresence } from "framer-motion";
@@ -11,16 +14,32 @@ import Marketing from '../../../assets/Marketing.jpg';
 const About = () => {
   const [activeTab, setActiveTab] = useState("company");
   const [showScroll, setShowScroll] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
-  const checkScroll = () => {
-    if (window.scrollY > 300) {
-      setShowScroll(true);
-    } else {
-      setShowScroll(false);
-    }
+  useEffect(() => {
+    const checkScroll = () => {
+      setShowScroll(window.scrollY > 300);
+    };
+    window.addEventListener('scroll', checkScroll);
+
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('scroll', checkScroll);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  const tabIcons = {
+    company: <FaBuilding />,
+    team: <FaUsers />,
+    mission: <FaBullseye />,
+    contact: <FaEnvelope />
   };
-
-  window.addEventListener('scroll', checkScroll);
 
   const SocialIcon = ({ icon: Icon, href }) => (
     <motion.a
@@ -36,7 +55,7 @@ const About = () => {
 
   const TeamCard = ({ member }) => (
     <motion.div
-      className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
+      className="bg-white rounded-xl overflow-hidden hover:shadow-lg transition-shadow"
       whileHover={{ y: -5 }}
     >
       <div className="relative h-80">
@@ -89,37 +108,34 @@ const About = () => {
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: 20 }}
-        className="space-y-8"
+        className="space-y-8 "
       >
-        <h2 className="text-4xl font-bold text-gray-900 text-center">Our Story</h2>
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 text-center">Our Story</h2>
+        <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
           <img
-              src={jackfruit}
-              alt="Sustainable jackfruit products"
-              className="rounded-2xl shadow-xl h-[500px] w-full object-cover"
-            />
+            src={jackfruit}
+            alt="Sustainable jackfruit products"
+            className="rounded-2xl h-auto w-full object-cover max-h-[500px]"
+          />
           <div className="space-y-6">
-            <p className="text-lg leading-relaxed text-gray-700">
+            <p className="text-base md:text-lg leading-relaxed text-gray-700">
               Global Venture is revolutionizing sustainable nutrition through innovative jackfruit-based solutions. 
               Based in Mumbai, we combine traditional wisdom with modern technology to create eco-friendly, 
               nutrient-rich products that promote both personal health and environmental sustainability.
             </p>
             <div className="grid grid-cols-3 gap-4 text-center">
-              <div className="p-4 bg-white rounded-xl shadow-sm">
-                <p className="text-blue-600 font-bold text-2xl">15+</p>
-                <p className="text-gray-600">Years Experience</p>
-              </div>
-              <div className="p-4 bg-white rounded-xl shadow-sm">
-                <p className="text-blue-600 font-bold text-2xl">100%</p>
-                <p className="text-gray-600">Natural Ingredients</p>
-              </div>
-              <div className="p-4 bg-white rounded-xl shadow-sm">
-                <p className="text-blue-600 font-bold text-2xl">1M+</p>
-                <p className="text-gray-600">Products Sold</p>
-              </div>
+              {[
+                { value: "15+", label: "Years Experience" },
+                { value: "100%", label: "Natural Ingredients" },
+                { value: "1M+", label: "Products Sold" }
+              ].map((item, index) => (
+                <div key={index} className="p-4 bg-white rounded-xl">
+                  <p className="text-blue-600 font-bold text-xl md:text-2xl">{item.value}</p>
+                  <p className="text-gray-600 text-sm md:text-base">{item.label}</p>
+                </div>
+              ))}
             </div>
           </div>
-          
         </div>
       </motion.div>
     ),
@@ -128,10 +144,10 @@ const About = () => {
         key="team"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="space-y-12"
+        className="space-y-8 md:space-y-12"
       >
-        <h2 className="text-4xl font-bold text-gray-900 text-center">Leadership Team</h2>
-        <div className="grid md:grid-cols-3 gap-8">
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 text-center">Leadership Team</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
           {teamMembers.map((member) => (
             <TeamCard key={member.name} member={member} />
           ))}
@@ -143,47 +159,52 @@ const About = () => {
         key="mission"
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="grid md:grid-cols-2 gap-8"
+        className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8"
       >
-        <div className="bg-white p-8 rounded-2xl shadow-lg">
-          <div className="flex items-center gap-4 mb-6">
-            <div className="p-3 bg-blue-100 rounded-full">
-              <IoLocationSharp className="text-blue-600 text-2xl" />
+        {[
+          {
+            icon: <IoLocationSharp className="text-blue-600 text-2xl" />,
+            title: "Our Mission",
+            content: (
+              <p className="text-gray-700 leading-relaxed">
+                To transform global food systems through sustainable innovation, creating plant-based solutions 
+                that nourish people while regenerating our planet. We are committed to ethical sourcing, 
+                zero-waste production, and empowering local farming communities.
+              </p>
+            ),
+            bg: "bg-blue-100"
+          },
+          {
+            icon: <MdEmail className="text-purple-600 text-2xl" />,
+            title: "Core Values",
+            content: (
+              <ul className="space-y-3 text-gray-700">
+                {[
+                  "Sustainable & ethical sourcing",
+                  "Nutritional excellence",
+                  "Environmental stewardship",
+                  "Community empowerment"
+                ].map((item, index) => (
+                  <li key={index} className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-blue-600 rounded-full" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            ),
+            bg: "bg-purple-100"
+          }
+        ].map((card, index) => (
+          <div key={index} className="bg-white p-6 md:p-8 rounded-xl">
+            <div className="flex items-center gap-4 mb-4 md:mb-6">
+              <div className={`p-3 ${card.bg} rounded-full`}>
+                {card.icon}
+              </div>
+              <h3 className="text-xl md:text-2xl font-bold text-gray-900">{card.title}</h3>
             </div>
-            <h3 className="text-2xl font-bold text-gray-900">Our Mission</h3>
+            {card.content}
           </div>
-          <p className="text-gray-700 leading-relaxed">
-            To transform global food systems through sustainable innovation, creating plant-based solutions 
-            that nourish people while regenerating our planet. We are committed to ethical sourcing, 
-            zero-waste production, and empowering local farming communities.
-          </p>
-        </div>
-        <div className="bg-white p-8 rounded-2xl shadow-lg">
-          <div className="flex items-center gap-4 mb-6">
-            <div className="p-3 bg-purple-100 rounded-full">
-              <MdEmail className="text-purple-600 text-2xl" />
-            </div>
-            <h3 className="text-2xl font-bold text-gray-900">Core Values</h3>
-          </div>
-          <ul className="space-y-4 text-gray-700">
-            <li className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-blue-600 rounded-full" />
-              Sustainable & ethical sourcing
-            </li>
-            <li className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-blue-600 rounded-full" />
-              Nutritional excellence
-            </li>
-            <li className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-blue-600 rounded-full" />
-              Environmental stewardship
-            </li>
-            <li className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-blue-600 rounded-full" />
-              Community empowerment
-            </li>
-          </ul>
-        </div>
+        ))}
       </motion.div>
     ),
     contact: (
@@ -191,32 +212,31 @@ const About = () => {
         key="contact"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="grid lg:grid-cols-2 gap-12"
+        className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12"
       >
-        <div className="bg-white p-8 rounded-2xl shadow-lg">
-          <h2 className="text-3xl font-bold mb-8 text-gray-900">Get in Touch</h2>
+        <div className="bg-white p-6 md:p-8 rounded-xl">
+          <h2 className="text-2xl md:text-3xl font-bold mb-6 text-gray-900">Get in Touch</h2>
           <form className="space-y-4">
-            <div>
-              <label className="block text-gray-700 mb-1">Name</label>
-              <input
-                type="text"
-                className="w-full px-4 py-3 border-2 bg-white border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div>
-              <label className="block text-gray-700 mb-1">Email</label>
-              <input
-                type="email"
-                className="w-full px-4 py-3 border-2 bg-white border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div>
-              <label className="block text-gray-700 mb-1">Message</label>
-              <textarea
-                rows="4"
-                className="w-full px-4 py-3 border-2 bg-white border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
+            {[
+              { label: "Name", type: "text" },
+              { label: "Email", type: "email" },
+              { label: "Message", type: "textarea" }
+            ].map((field) => (
+              <div key={field.label}>
+                <label className="block text-gray-700 mb-1">{field.label}</label>
+                {field.type === "textarea" ? (
+                  <textarea
+                    rows="4"
+                    className="w-full px-4 py-3 border-2 bg-white border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  />
+                ) : (
+                  <input
+                    type={field.type}
+                    className="w-full px-4 py-3 border-2 bg-white border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  />
+                )}
+              </div>
+            ))}
             <button
               type="submit"
               className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors"
@@ -225,32 +245,45 @@ const About = () => {
             </button>
           </form>
         </div>
-        <div className="space-y-8">
-          <div className="bg-white p-8 rounded-2xl shadow-lg">
-            <h3 className="text-2xl font-bold mb-6 text-gray-900">Contact Information</h3>
+        <div className="space-y-6 md:space-y-8">
+          <div className="bg-white p-6 md:p-8 rounded-xl">
+            <h3 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-gray-900">Contact Information</h3>
             <div className="space-y-4">
-              <div className="flex items-start gap-4">
-                <IoLocationSharp className="text-2xl text-blue-600 mt-1" />
-                <p className="text-gray-700">
-                  Building No 93 Ground Floor, Undriya Street (Chauki Mohalla)<br />
-                  Nagpada, Mumbai, Maharashtra<br />
-                  India 400008
-                </p>
-              </div>
-              <div className="flex items-center gap-4">
-                <MdEmail className="text-2xl text-blue-600" />
-                <a href="mailto:adimugeera@gmail.com" className="text-gray-700 hover:text-blue-600">
-                  adimugeera@gmail.com
-                </a>
-              </div>
-              <div className="flex items-center gap-4">
-                <MdPhone className="text-2xl text-blue-600" />
-                <a href="tel:+919555891697" className="text-gray-700 hover:text-blue-600">
-                  +91 95558 91697
-                </a>
-              </div>
+              {[
+                {
+                  icon: <IoLocationSharp className="text-2xl text-blue-600 mt-1" />,
+                  content: (
+                    <p className="text-gray-700">
+                      Building No 93 Ground Floor, Undriya Street (Chauki Mohalla)<br />
+                      Nagpada, Mumbai, Maharashtra<br />
+                      India 400008
+                    </p>
+                  )
+                },
+                {
+                  icon: <MdEmail className="text-2xl text-blue-600" />,
+                  content: (
+                    <a href="mailto:adimugeera@gmail.com" className="text-gray-700 hover:text-blue-600">
+                      adimugeera@gmail.com
+                    </a>
+                  )
+                },
+                {
+                  icon: <MdPhone className="text-2xl text-blue-600" />,
+                  content: (
+                    <a href="tel:+919555891697" className="text-gray-700 hover:text-blue-600">
+                      +91 95558 91697
+                    </a>
+                  )
+                }
+              ].map((item, index) => (
+                <div key={index} className="flex items-start gap-4">
+                  {item.icon}
+                  {item.content}
+                </div>
+              ))}
             </div>
-            <div className="flex gap-6 mt-8">
+            <div className="flex gap-6 mt-6 md:mt-8">
               <SocialIcon icon={FaLinkedin} />
               <SocialIcon icon={FaTwitter} />
               <SocialIcon icon={FaInstagram} />
@@ -262,21 +295,22 @@ const About = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#94B4C1]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 ">
         {/* Navigation Tabs */}
-        <div className="flex flex-wrap justify-center gap-4 mb-4 ">
-          {Object.keys(tabs).map((tab) => (
+        <div className="flex flex-wrap justify-center gap-2 md:gap-4 mb-6 md:mb-8">
+          {Object.entries(tabs).map(([tabKey]) => (
             <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`px-6 py-3 rounded-xl font-medium transition-colors ring-1 ring-[#273F4F]   ${
-                activeTab === tab
-                  ? 'bg-[#273F4F]  text-white'
-                  : 'hover:bg-[#273F4F]  hover:text-white'
-              }`}
+              key={tabKey}
+              onClick={() => setActiveTab(tabKey)}
+              className={`flex items-center justify-center px-4 py-3 rounded-xl font-medium transition-colors ${
+                activeTab === tabKey
+                  ? 'bg-[#273F4F] text-white'
+                  : 'bg-white text-[#273F4F] ring-1 ring-[#273F4F] '
+              } ${isMobile ? 'text-xl p-3' : 'px-6 py-3'}`}
+              aria-label={tabKey}
             >
-              {tab.charAt(0).toUpperCase() + tab.slice(1)}
+              {isMobile ? tabIcons[tabKey] : tabKey.charAt(0).toUpperCase() + tabKey.slice(1)}
             </button>
           ))}
         </div>
@@ -288,22 +322,28 @@ const About = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="bg-[#547792]  shadow-xl p-8"
+            className="bg-[#547792] rounded-xl p-6 md:p-8"
           >
             {tabs[activeTab]}
           </motion.div>
         </AnimatePresence>
 
         {/* Scroll to Top */}
-        {showScroll && (
-          <motion.button
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="fixed bottom-8 right-8 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700"
-            whileHover={{ scale: 1.1 }}
-          >
-            <FaArrowUp className="text-xl" />
-          </motion.button>
-        )}
+        <AnimatePresence>
+          {showScroll && (
+            <motion.button
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="fixed bottom-6 right-6 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 z-50"
+              whileHover={{ scale: 1.1 }}
+              aria-label="Scroll to top"
+            >
+              <FaArrowUp className="text-xl" />
+            </motion.button>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

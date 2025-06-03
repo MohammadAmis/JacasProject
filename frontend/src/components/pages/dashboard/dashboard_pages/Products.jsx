@@ -284,15 +284,10 @@ const Products = () => {
       {/* Modal For Upload */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-lg max-w-lg w-full relative">
-            <button
-              onClick={closeModal}
-              className="absolute top-3 right-3 text-gray-400 hover:text-gray-600"
-            >
-              <FiX size={24} />
-            </button>
-            <ProductUploadForm modelInfo={modelInfo}  />
-          </div>
+          
+            
+            <ProductUploadForm modelInfo={modelInfo} closeModal={closeModal}  />
+          
         </div>
       )}
 

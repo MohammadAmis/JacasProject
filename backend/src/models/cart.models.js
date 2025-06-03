@@ -1,40 +1,40 @@
+// models/Cart.js
 import mongoose from 'mongoose';
+import cartItemSchema from './cartItem.models.js';
 
 const cartSchema = new mongoose.Schema({
-    user_id: {
-        type: mongoose.Schema.Types.ObjectId, // Reference to the user
-        ref: 'User', // Assuming you have a User model
-        required: true,
-    },
-    product_id: {
-        type: mongoose.Schema.Types.ObjectId, // Reference to the product
-        ref: 'Product', // Assuming you have a Product model
-        required: true,
-    },
-    product_name: {
-        type: String,
-        required: true,
-    },
-    product_image: {
-        type: String,
-        required: true,
-    },
-    price: {
-        type: Number,
-        required: true,
-    },
-    quantity: {
-        type: Number,
-        required: true,
-        default: 1,
-    },
-    status: {
-        type: String,
-        enum: ['pending', 'completed', 'cancelled'], // Define allowed statuses
-        default: 'pending',
-    }
-}, { timestamps: true }); // Adds createdAt and updatedAt fields
+  user_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+    unique: true // one active cart per user
+  },
+  items: [cartItemSchema],
+  status: {
+    type: String,
+    enum: ['active', 'pending', 'processing', 'shipped', 'delivered', 'cancelled'],
+    default: 'active'
+  },
+  total_items: {
+    type: Number,
+    default: 0
+  },
+  grand_total: {
+    type: Number,
+    default: 0
+  },
+  last_updated: {
+    type: Date,
+    default: Date.now
+  }
+}, { timestamps: true });
+
+cartSchema.pre('save', function (next) {
+  this.total_items = this.items.reduce((sum, item) => sum + item.quantity, 0);
+  this.grand_total = this.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  this.last_updated = new Date();
+  next();
+});
 
 const Cart = mongoose.model('Cart', cartSchema);
-
 export default Cart;

@@ -21,6 +21,7 @@ const ProductList = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+  
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -48,8 +49,9 @@ const ProductList = () => {
   }, [searchQuery, priceRange, originalProducts]); // Dependencies for filtering
 
   return (
-    <div className="bg-[#94B4C1] w-full py-3 ">
+    <div className="bg-white w-full py-3 ">
       <div className="max-w-7xl mx-auto mb-4 space-y-4">
+        {          /* Header Section */}
         <div className="flex items-center justify-between gap-4 flex-wrap">
           <div className="relative flex-1 min-w-[300px]">
             <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
@@ -118,10 +120,7 @@ const ProductList = () => {
           )}
         </AnimatePresence>
       </div>
-    <div className="max-w-7xl mx-auto p-3   bg-[#547792]">
-      
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-items-center">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-items-center">
         {filteredProducts.map((product) => (
           <motion.div
             key={product.id}
@@ -154,7 +153,7 @@ const ProductList = () => {
         <FiArrowUp />
       </button>
     </div>
-    </div>
+    
   );
 };
 

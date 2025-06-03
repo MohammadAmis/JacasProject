@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { FaHeart, FaStar } from "react-icons/fa";
+import { useState, useEffect } from "react";
+import { useCart } from '../../../context/CartContext';
+import { FaShoppingCart, FaStar, FaCheck } from "react-icons/fa";
 import PropTypes from 'prop-types';
 import { useNavigate } from "react-router-dom";
 import jackfruit_1 from '../../../assets/product_1.webp';
@@ -7,49 +8,50 @@ import jackfruit_2 from '../../../assets/product_2.webp';
 import jackfruit_3 from '../../../assets/product_3.webp';
 import jackfruit_4 from '../../../assets/product_4.webp';
 
-
-
 const Card_Product = ({ product }) => {
-  const [isFavorite, setIsFavorite] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [isInCart, setIsInCart] = useState(false);
+  const { addToCart, removeFromCart, cartItems } = useCart();
   const navigate = useNavigate();
 
-  const product_details= {
-    id: product._id,
-    name: 'Premium Wireless Headphones',
-    price: 299.99,
-    description: 'High-quality wireless headphones with noise cancellation and 30-hour battery life.',
-    images: [
-      jackfruit_1,
-      jackfruit_2,
-      jackfruit_3,
-      jackfruit_4
-    ],
-    specs: [
-      { name: 'Battery Life', value: '30 hours' },
-      { name: 'Bluetooth Version', value: '5.0' },
-      { name: 'Noise Cancellation', value: 'Active' },
-      { name: 'Water Resistance', value: 'IPX4' },
-      { name: 'Weight', value: '250g' },
-      { name: 'Warranty', value: '2 years' }
-    ]
+  const product_details = {
+    _id: product._id,
+    name: product.name,
+    price: product.price,
+    discount_price: product.discount_price,
+    description: 'Premium jackfruit product with natural goodness.',
+    images: [jackfruit_1, jackfruit_2, jackfruit_3, jackfruit_4],
+    rating: product.rating
   };
 
   const calculateDiscount = (original, discounted) => {
     return Math.round(((original - discounted) / original) * 100);
   };
 
-  const handleFavoriteClick = (e) => {
-    e.stopPropagation(); // Prevent card click when clicking favorite
-    setIsFavorite(!isFavorite);
+  useEffect(() => {
+    const itemInCart = cartItems.find(item => item._id === product._id);
+    setIsInCart(!!itemInCart);
+  }, [cartItems, product._id]);
+
+  const handleAddToCart = (e) => {
+    e.stopPropagation();
+    
+    if (isInCart) {
+      removeFromCart(product._id);
+    } else {
+      addToCart({
+        _id: product._id,
+        name: product.name,
+        price: product.discount_price,
+        image: product.image,
+        quantity: 1
+      });
+    }
   };
 
   const handleCardClick = () => {
-    // navigate(`/product-detail/${product._id}`, {  // this  is correct code for navigate to product detail page
-    //   state: { product } // Pass product data via state
-    // });
-    navigate(`/product-detail/${product_details.id}`, {
-      state: { product_details } // Pass product data via state
+    navigate(`/product-detail/${product_details._id}`, {
+      state: { product_details }
     });
   };
 
@@ -57,7 +59,7 @@ const Card_Product = ({ product }) => {
     return [...Array(5)].map((_, index) => (
       <FaStar
         key={index}
-        className={`h-4 w-4 ${
+        className={`h-3 w-3 ${
           index < Math.floor(rating) ? "text-yellow-400" : "text-gray-300"
         }`}
       />
@@ -66,53 +68,66 @@ const Card_Product = ({ product }) => {
 
   return (
     <div 
-      className="relative w-72 bg-white rounded-xl shadow-md transition-all duration-300 hover:shadow-xl overflow-hidden cursor-pointer"
+      className="relative w-full max-w-xs bg-white rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl overflow-hidden cursor-pointer border border-gray-100"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={handleCardClick}
     >
-      <div className="relative h-96 transition-all duration-300" role="img" aria-label={product.name}>
+      {/* Product Image */}
+      <div className="relative h-64 w-full transition-all duration-300" role="img" aria-label={product.name}>
         <img
           src={product.image}
           alt={product.name} 
-          className={`w-full h-full object-cover ${isHovered ? 'brightness-50' : ''}`}
+          className={`w-full h-full object-cover transition-all duration-300 ${isHovered ? 'scale-105' : ''}`}
         />
-        <div className="absolute top-0 left-0 right-0 p-4 flex justify-between items-start">
-          <span className="bg-red-500 text-white px-3 py-1 rounded-full font-bold text-sm">
-            {calculateDiscount(product.price, product.discount_price)}% OFF
-          </span>
-          <button
-            onClick={handleFavoriteClick}
-            className="bg-white p-2 rounded-full shadow-md hover:scale-110 transition-transform duration-200"
-            aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
-          >
-            <FaHeart
-              className={`h-5 w-5 ${
-                isFavorite ? "text-red-500" : "text-gray-400"
-              }`}
-            />
-          </button>
-        </div>
-        <div
-          className={`absolute bottom-0 left-0 right-0 bg-transparent p-4 transform transition-all duration-300 ${isHovered ? "translate-y-0" : "translate-y-full"}`}
+        
+        {/* Discount Badge */}
+        <span className="absolute top-3 left-3 bg-green-600 text-white px-2 py-1 rounded-md font-bold text-xs">
+          {calculateDiscount(product.price, product.discount_price)}% OFF
+        </span>
+        
+        {/* Add to Cart Button */}
+        <button
+          onClick={handleAddToCart}
+          className={`absolute top-3 right-3 p-2 rounded-full shadow-md transition-all duration-300 ${
+            isInCart 
+              ? 'bg-green-500 text-white' 
+              : 'bg-white/90 hover:bg-white text-gray-800'
+          }`}
+          aria-label={isInCart ? "Remove from cart" : "Add to cart"}
         >
-          <h3 className="font-bold text-lg capitalize text-white mb-2">
-            {product.name}
-          </h3>
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-2xl font-bold text-white">
-              ₹{product.discount_price}
-            </span>
-            <div className="flex gap-1">{renderStars(product.rating)}</div>
-          </div>
+          {isInCart ? (
+            <FaCheck className="h-4 w-4" />
+          ) : (
+            <FaShoppingCart className="h-4 w-4" />
+          )}
+        </button>
+      </div>
+
+      {/* Product Info */}
+      <div className="p-4">
+        <h3 className="font-medium text-gray-900 text-sm mb-1 line-clamp-1 capitalize">
+          {product.name}
+        </h3>
+        
+        <div className="flex items-center gap-1 mb-2">
+          {renderStars(product.rating)}
+          <span className="text-xs text-gray-500 ml-1">({product.rating})</span>
+        </div>
+        
+        <div className="flex items-center gap-2">
+          <span className="text-lg font-bold text-gray-900">
+            ₹{product.discount_price}
+          </span>
+          <span className="text-sm text-gray-500 line-through">
+            ₹{product.price}
+          </span>
         </div>
       </div>
     </div>
   );
 };
 
-
-// Add PropTypes to validate the 'product' prop
 Card_Product.propTypes = {
   product: PropTypes.shape({
     _id: PropTypes.string.isRequired,
@@ -120,7 +135,7 @@ Card_Product.propTypes = {
     price: PropTypes.number.isRequired,
     discount_price: PropTypes.number.isRequired,
     image: PropTypes.string.isRequired,
-    rating:PropTypes.number.isRequired
+    rating: PropTypes.number.isRequired
   }).isRequired,
 };
 

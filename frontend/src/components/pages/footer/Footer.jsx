@@ -1,93 +1,119 @@
-import { FaFacebook, FaTwitter, FaInstagram, FaGithub } from 'react-icons/fa';
-import logo from '../../../../src/assets/company-logo-3.png' // Adjust the path as necessary
+import { FaFacebook, FaTwitter, FaInstagram, FaGithub, FaEnvelope, FaPhoneAlt, FaMapMarkerAlt } from 'react-icons/fa';
+import logo from '../../../../src/assets/company-logo-3.png';
 
 function Footer() {
   return (
-    <footer className="bg-[#273F4F] text-gray-300">
+    <footer className="bg-[#1a2d3a] text-gray-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 ">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           
-          {/* Logo */}
-          <div className="flex justify-items-center items-center sm:col-span-2 lg:col-span-1">
-            <img 
-              src={logo} 
-              alt="Company Logo" 
-              className="h-96 w-auto mx-auto" // Adjust height as needed
-            />
-            {/* Jacas */}
-          </div>
-
-          {/* Quick Links */}
-          <div className='justify-self-center'>
-            <h3 className="text-white font-semibold mb-4">Quick Links</h3>
-            <nav className="space-y-2">
-              <a href="#" className="block hover:text-indigo-400 transition-colors">About</a>
-              <a href="#" className="block hover:text-indigo-400 transition-colors">Products</a>
-              <a href="#" className="block hover:text-indigo-400 transition-colors">Your Cart</a>
-            </nav>
-          </div>
-
-          {/* Support */}
-          <div className='justify-self-center'>
-            <h3 className="text-white font-semibold mb-4">Support</h3>
-            <nav className="space-y-2">
-              <a href="#" className="block hover:text-indigo-400 transition-colors">Contact Us</a>
-              <a href="#" className="block hover:text-indigo-400 transition-colors">FAQ</a>
-              <a href="#" className="block hover:text-indigo-400 transition-colors">Shipping</a>
-              <a href="#" className="block hover:text-indigo-400 transition-colors">Returns Policy</a>
-            </nav>
-          </div>
-
-          {/* Follow Us */}
-          <div className="sm:col-span-2 lg:col-span-1 justify-self-center">
-            <h3 className="text-white font-semibold mb-4">Follow Us</h3>
-            <div className="flex space-x-4 mb-6">
-              <a href="#" className="text-gray-400 hover:text-indigo-400 transition-colors">
-                <FaFacebook className="h-6 w-6" />
+          {/* Brand Column */}
+          <div className="space-y-6">
+            <div className="flex justify-center md:justify-start">
+              <img 
+                src={logo} 
+                alt="Company Logo" 
+                className="h-40 w-auto object-contain" // Increased from h-24 to h-40
+              />
+            </div>
+            <p className="text-gray-400 text-center md:text-left text-lg"> {/* Increased text size */}
+              Premium products for discerning customers. Quality you can trust.
+            </p>
+            <div className="flex justify-center md:justify-start space-x-4 pt-4">
+              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <FaFacebook className="h-6 w-6" /> {/* Increased icon size */}
               </a>
-              <a href="#" className="text-gray-400 hover:text-indigo-400 transition-colors">
+              <a href="#" className="text-gray-400 hover:text-white transition-colors">
                 <FaTwitter className="h-6 w-6" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-indigo-400 transition-colors">
+              <a href="#" className="text-gray-400 hover:text-white transition-colors">
                 <FaInstagram className="h-6 w-6" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-indigo-400 transition-colors">
+              <a href="#" className="text-gray-400 hover:text-white transition-colors">
                 <FaGithub className="h-6 w-6" />
               </a>
             </div>
+          </div>
 
-            {/* Newsletter moved below Follow Us */}
-            <div className="space-y-4 justify-self-center">
-              <p className="text-sm">Join our newsletter for updates</p>
-              <form className="flex gap-2">
-                <input 
-                  type="email" 
-                  placeholder="Enter your email" 
-                  className="w-full px-3 py-2 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:border-indigo-500"
-                />
-                <button 
-                  type="submit"
-                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-white font-medium transition-colors"
-                >
-                  Subscribe
-                </button>
-              </form>
+          {/* Quick Links */}
+          <div className="space-y-4">
+            <h3 className="text-white font-bold text-lg tracking-wider uppercase">Quick Links</h3>
+            <nav className="space-y-3">
+              <a href="/about" className=" text-gray-400 hover:text-white transition-colors flex items-start">
+                <span className="bg-indigo-600 w-1 h-1 rounded-full mt-2 mr-2"></span>
+                About Us
+              </a>
+              <a href="/products" className=" text-gray-400 hover:text-white transition-colors flex items-start">
+                <span className="bg-indigo-600 w-1 h-1 rounded-full mt-2 mr-2"></span>
+                Our Products
+              </a>
+              <a href="/cart" className=" text-gray-400 hover:text-white transition-colors flex items-start">
+                <span className="bg-indigo-600 w-1 h-1 rounded-full mt-2 mr-2"></span>
+                Your Cart
+              </a>
+              <a href="#" className=" text-gray-400 hover:text-white transition-colors flex items-start">
+                <span className="bg-indigo-600 w-1 h-1 rounded-full mt-2 mr-2"></span>
+                Track Order
+              </a>
+            </nav>
+          </div>
+
+          {/* Contact Info */}
+          <div className="space-y-4">
+            <h3 className="text-white font-bold text-lg tracking-wider uppercase">Contact Us</h3>
+            <div className="space-y-3">
+              <div className="flex items-start">
+                <FaMapMarkerAlt className="text-indigo-400 mt-1 mr-3 flex-shrink-0" />
+                <span className="text-gray-400">123 Business Ave, Suite 500, San Francisco, CA 94107</span>
+              </div>
+              <div className="flex items-start">
+                <FaEnvelope className="text-indigo-400 mt-1 mr-3 flex-shrink-0" />
+                <span className="text-gray-400">info@company.com</span>
+              </div>
+              <div className="flex items-start">
+                <FaPhoneAlt className="text-indigo-400 mt-1 mr-3 flex-shrink-0" />
+                <span className="text-gray-400">+1 (555) 123-4567</span>
+              </div>
             </div>
+          </div>
+
+          {/* Newsletter */}
+          <div className="space-y-4">
+            <h3 className="text-white font-bold text-lg tracking-wider uppercase">Newsletter</h3>
+            <p className="text-gray-400">
+              Subscribe to get updates on new products and special offers
+            </p>
+            <form className="space-y-3">
+              <input 
+                type="email" 
+                placeholder="Your email address" 
+                className="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                required
+              />
+              <button 
+                type="submit"
+                className="w-full px-4 py-3 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-white font-medium transition-colors shadow-lg"
+              >
+                Subscribe Now
+              </button>
+            </form>
           </div>
         </div>
 
         {/* Copyright */}
-        <div className="border-t border-gray-800 mt-8 pt-8 text-center flex flex-row items-center justify-center gap-4">
-          <p className="text-sm text-gray-500">
+        <div className="border-t border-gray-700 mt-12 pt-8 flex flex-col md:flex-row items-center justify-between">
+          <p className="text-gray-500 text-sm order-2 md:order-1 mt-4 md:mt-0">
             &copy; {new Date().getFullYear()} Mohammad Amis. All rights reserved.
           </p>
-          <a href="#" className="text-gray-500 hover:text-gray-300 text-sm">Privacy Policy</a>
-          <a href="#" className="text-gray-500 hover:text-gray-300 text-sm">Terms of Service</a>
-          
+          <div className="flex space-x-6 order-1 md:order-2">
+            <a href="#" className="text-gray-500 hover:text-white text-sm transition-colors">Privacy Policy</a>
+            <a href="#" className="text-gray-500 hover:text-white text-sm transition-colors">Terms of Service</a>
+            <a href="#" className="text-gray-500 hover:text-white text-sm transition-colors">Cookie Policy</a>
+          </div>
         </div>
       </div>
     </footer>
   )
 }
 
-export default Footer
+export default Footer;

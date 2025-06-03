@@ -17,13 +17,12 @@ const Testimonial = () => {
   };
 
   return (
-    <section className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-0 py-6">
-      <div className="bg-[#547792]  shadow-2xl p-2 sm:p-4 lg:p-6">
-        <h2 className="text-4xl font-bold text-black mb-6 text-center">
+    <section className="max-w-7xl mx-auto py-3">
+        <h2 className="text-3xl sm:text-4xl font-bold mb-6 text-center bg-[#547792] l rounded-xl overflow-hidden shadow-2xl p-3 mx-auto">
           What Our Customers Say
         </h2>
 
-        <div className="relative max-w-3xl mx-auto">
+        <div className="relative max-w-3xl mx-auto my-10">
           <motion.div
             key={current}
             initial={{ opacity: 0, y: 20 }}
@@ -32,7 +31,7 @@ const Testimonial = () => {
             transition={{ duration: 0.3 }}
           >
             {/* Card Container */}
-            <div className="bg-[#273F4F] rounded-xl  p-8 relative">
+            <div className="bg-[#547792] rounded-xl  p-8 relative">
               {/* Navigation Arrows - Top Right */}
               <div className="absolute -top-6 right-4 flex space-x-2">
                 <button
@@ -99,7 +98,6 @@ const Testimonial = () => {
             ))}
           </div>
         </div>
-      </div>
     </section>
   );
 };

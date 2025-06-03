@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { FiSearch, FiPhone, FiMail, FiClock,FiTruck } from "react-icons/fi";
 import { IoMdArrowDropright } from "react-icons/io";
+import { motion } from "framer-motion";
 import jackfruit from '../../../assets/jackfruit_1.jpg'
 
 const Help = () => {
@@ -56,10 +57,10 @@ const Help = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#94B4C1]">
+    <div className="min-h-screen bg-white">
       <main className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
         <header className="text-center mb-6">
-          <h1 className="text-4xl font-bold text-black mb-6">
+          <h1 className="text-2xl md:text-4xl font-bold  text-black mb-6">
             How Can We Help You?
           </h1>
           <div className="max-w-full mx-auto relative">
@@ -68,14 +69,14 @@ const Help = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search help articles..."
-              className="w-full px-14 py-3 rounded-xl   focus:ring-2   bg-white "
+              className="w-full px-14 py-3 rounded-xl   ring-2 ring-[#273F4F]  bg-white "
               aria-label="Search help center"
             />
             <FiSearch className="absolute left-5 top-1/2 -translate-y-1/2 text-green-600 text-xl" />
           </div>
         </header>
 
-        <section className="mb-10">
+        <section className="mb-10 border rounded-xl overflow-hidden shadow-lg">
           <div className="relative  overflow-hidden shadow-xl">
             <img
               src={jackfruit}
@@ -162,34 +163,65 @@ const Help = () => {
           </div>
         </section>
 
-        <section className="mb-10">
-          <div className="bg-[#547792] text-black rounded-2xl p-12 text-center">
-            <h2 className="text-3xl font-bold mb-4">Direct Support</h2>
-            <p className="mb-12 text-black max-w-2xl mx-auto">
-              Our jackfruit experts are available 6 days a week to assist with any
-              inquiries
-            </p>
-            <div className="grid md:grid-cols-3 gap-8 text-white">
-              <div className="p-6 bg-[#273F4F]  rounded-xl backdrop-blur-sm">
-                <FiPhone className="mx-auto text-3xl mb-4 " />
-                <h3 className="font-semibold mb-2 ">Phone</h3>
-                <p className="">1-800-JACKFRT</p>
-                <p className="text-sm  mt-2">Mon-Fri: 9AM-6PM IST</p>
-              </div>
-              <div className="p-6 bg-[#273F4F] rounded-xl backdrop-blur-sm">
-                <FiMail className="mx-auto text-3xl mb-4" />
-                <h3 className="font-semibold mb-2">Email Support</h3>
-                <p>help@jackfruitstore.com</p>
-              </div>
-              <div className="p-6 bg-[#273F4F] rounded-xl backdrop-blur-sm">
-                <FiClock className="mx-auto text-3xl mb-4" />
-                <h3 className="font-semibold mb-2">Business Hours</h3>
-                <p>Mon-Fri: 9AM-6PM IST</p>
-              </div>
-              
-            </div>
+        
+        <section className="mb-16 px-4">
+  <div className="bg-gradient-to-br from-[#3a6a8a] to-[#547792] text-white rounded-3xl p-8 md:p-12 text-center shadow-xl overflow-hidden max-w-[90rem] mx-auto">
+    {/* Decorative elements */}
+    <div className="absolute inset-0 opacity-10">
+      <div className="absolute top-0 right-0 w-32 h-32 bg-white rounded-full filter blur-3xl"></div>
+      <div className="absolute bottom-0 left-0 w-40 h-40 bg-white rounded-full filter blur-3xl"></div>
+    </div>
+    
+    <div className="relative z-10">
+      <h2 className="text-3xl md:text-4xl font-bold mb-4 px-4">Direct Support</h2>
+      <p className="mb-8 md:mb-12 text-white/90 max-w-2xl mx-auto text-lg px-4">
+        Our jackfruit experts are available 6 days a week to assist with any inquiries
+      </p>
+      
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto px-4">
+        {/* Phone Support Card */}
+        <motion.div 
+          whileHover={{ y: -5 }}
+          className="p-6 bg-white/10 rounded-xl backdrop-blur-md border border-white/10 hover:border-white/20 transition-all overflow-hidden"
+        >
+          <div className="bg-[#273F4F] w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+            <FiPhone className="text-2xl text-white" />
           </div>
-        </section>
+          <h3 className="font-semibold text-xl mb-3 truncate">Phone Support</h3>
+          <p className="text-lg font-medium mb-1 break-words">1-800-JACKFRT</p>
+          <p className="text-sm text-white/80 truncate">Mon-Fri: 9AM-6PM IST</p>
+        </motion.div>
+        
+        {/* Email Support Card */}
+        <motion.div 
+          whileHover={{ y: -5 }}
+          className="p-6 bg-white/10 rounded-xl backdrop-blur-md border border-white/10 hover:border-white/20 transition-all overflow-hidden"
+        >
+          <div className="bg-[#273F4F] w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+            <FiMail className="text-2xl text-white" />
+          </div>
+          <h3 className="font-semibold text-xl mb-3 truncate">Email Support</h3>
+          <p className="text-lg font-medium break-all">help@jackfruitstore.com</p>
+          <p className="text-sm text-white/80 mt-2 truncate">24/7 Response</p>
+        </motion.div>
+        
+        {/* Business Hours Card */}
+        <motion.div 
+          whileHover={{ y: -5 }}
+          className="p-6 bg-white/10 rounded-xl backdrop-blur-md border border-white/10 hover:border-white/20 transition-all overflow-hidden"
+        >
+          <div className="bg-[#273F4F] w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+            <FiClock className="text-2xl text-white" />
+          </div>
+          <h3 className="font-semibold text-xl mb-3 truncate">Business Hours</h3>
+          <p className="text-lg font-medium mb-1 break-words">Mon-Sat: 9AM-6PM IST</p>
+          <p className="text-sm text-white/80 truncate">Closed on Sundays</p>
+        </motion.div>
+      </div>
+    </div>
+  </div>
+</section>
+
       </main>
     </div>
   );
