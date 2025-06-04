@@ -10,8 +10,8 @@ const app = express();
 
 
 // Allow only your frontend origin
-// const allowedOrigins = ['https://jacasproject.onrender.com'];
-const allowedOrigins = ['https://global-venture.onrender.com'];
+const allowedOrigins = ['https://jacasproject.onrender.com'];
+// const allowedOrigins = ['https://global-venture.onrender.com'];
 
 app.get('/', (req, res) => {
   res.send('Hello, World!');
