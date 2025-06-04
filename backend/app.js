@@ -13,6 +13,9 @@ const app = express();
 // const allowedOrigins = ['https://jacasproject.onrender.com'];
 const allowedOrigins = ['https://global-venture.onrender.com'];
 
+app.get('/', (req, res) => {
+  res.send('Hello, World!');
+});
 
 app.use(cors({
   origin: function (origin, callback) {
